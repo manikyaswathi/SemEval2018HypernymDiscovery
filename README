@@ -3,6 +3,7 @@ Team : Babbage
 Team members (in alphabatical order) : Arshia Zernab Hassan, Swathi Manikya Vallabhajosyula
 
 Problem Description : 
+Objective: Find the list of best Hypernyms (output) for a term (input) from a search-space of Hypernyms(vocabulary).
 
 Solution :
 
