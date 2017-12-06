@@ -1,0 +1,506 @@
+Author : Arshia Zernab Hassan
+Team : Babbage
+
+We wanted to employ the approach proposed by Fu et al [1]. 
+Ustalov et al. [2] developed a tool(hyperstar) implementing that approach. 
+The code for that tool is available at -
+https://github.com/nlpub/hyperstar
+To download the system run -
+	git clone https://github.com/nlpub/hyperstar.git 
+The hyperstar system was build to process Russian language data, although in their paper they gave evaluation over english language data also. 
+We used majority of their code, but had to change some of the portion to make it compatible with our data and environment.
+
+#####################################################################
+Run Instruction : 
+#####################################################################
+Run - 
+./driver.sh <path to pre-generated word2vec model to be used>
+
+#############################################################################
+Following packages should be installed - 
+scikit-learn 
+	pip install -U scikit-learn
+psutil 
+	pip install psutil
+
+#############################################################################
+The directory and files that we used from ‘hyperstar’ system are listed below -
+Main Directory : 
+	dictionary.ru.py 
+	prepare.py 
+	cluster.py 
+	train.py 
+	evaluate.py 
+	identity.py 
+	batch_sim
+		__init__.py
+		argmaxk.py
+		nn_vec.py 
+		parallel.py 
+	projlearn
+		__init__.py
+		baseline.py
+		Note : there are other codes available for learning. We only used baseline method.
+#############################################################################
+Files that we added :
+	create_hypo_hyper_list_from_train_data.py
+	refine_candidates.py
+	task9-scorer.py (evaluation module from SemEval)
+	driver.sh (For running the complete system)
+#############################################################################
+Following data files are needed to initiate the process -
+word2vec model (pre-generated)
+1A.english.training.data.txt - training input terms provided by SemEval
+1A.english.training.gold.txt - training gold data provided by SemEval
+1A.english.vocabulary.txt - vocabulary provided by SemEval
+
+#############################################################################
+Description of files :
+#############################################################################
+
+The following modules are run sequentially. 
+Each module uses data files created by previous module and produces data files that are used by subsequent module.
+
+*****************************************************************************
+create_hypo_hyper_list_from_train_data.py
+*****************************************************************************
+Creates data_train_gold.csv tab delimited data file that contains hyponym<\t>hypernym format lines from 1A.english.training.data.txt and 1A.english.training.gold.txt. 
+The output data_train_gold.csv file should contain ‘hyponym	hypernym’ as the first line to work properly in subsequent uses.
+
+#Prerequisites : 
+1A.english.training.data.txt and 1A.english.training.gold.txt data files should be present in the working directory.
+1A.english.training.data.txt contains hyponym<\t>type on each line and 1A.english.training.gold.txt ‘hypernym1<\t>hypernym2<\t>hypernym3..’ on lines allinged to hyponyms from 1A.english.training.data.txt.
+#Example
+‘blackfly’ is a hyponym from 1A.english.training.gold.txt on line 1
+‘homopterous insect	insect’ are the hypernyms from 1A.english.training.gold.txt on line 1
+
+Output :
+data_train_gold.csv created contains the following lines - 
+hyponym	hypernym
+blackfly	homopterous insect
+blackfly	insect
+
+*****************************************************************************
+dictionary.ru.py
+*****************************************************************************
+This is a data separator module. 
+It divides hyponym-hypernym map dataset into training, test and validation datasets using random sampling with default seed of 228. 
+Same set of data created for same set, different dataset created by setting seeds using --seed option.
+
+#Prerequisites :
+A trained word2vec model. The default model name is hard coded as “w2v.txt”. The correct path with filename should be provided as a command line argument using option --w2v.
+An input hypernym-hyponym data file. The name of the data file  should be “data_train_gold.csv”. This is created using create_hypo_hyper_list_from_train_data.py module.
+ 
+The following files are produced after running this module :
+Subsumptions-validation.txt
+Subsumptions-train.txt
+Subsumptions-test.txt
+Each of the file has tab separated hyponym-hypernym pairs. For example -
+atmosphere	phenomenon
+atmosphere	fluid
+…
+
+*****************************************************************************
+prepare.py
+*****************************************************************************
+Creates zipped version of training, test and validation datasets which contains the w2v vector forms of the words. 
+It produces .npz binary files which contains -
+X_index = offset and index information of the pairs
+Y_all = w2v vector form of hypernyms
+Z_all = w2v vector form of hyponyms
+
+#Prerequisites :
+Subsumptions-validation.txt
+Subsumptions-train.txt
+Subsumptions-test.txt
+These are produced by dictionary.ru.py  module.
+
+The following files are produced after running this module :
+validation.npz
+train.npz
+test.npz
+These contains vector representations of hyponyms and hypernyms generated by word2vec model.
+
+*****************************************************************************
+cluster.py
+*****************************************************************************
+Uses k-means clustering to create clusters of training data.
+It uses fit_predict to compute cluster centers and predict cluster index for each train_offsets, where - train_offsets = w2v of hypernym - w2v of hyponym.
+If no k value is provided 20 is set as k. 
+
+#Prerequisites :
+Zipped training data set 'train.npz' created by prepare.py .'train.npz' is set as the default value for --train option of command line argument.
+‘K’ parameter for k-means clustering can be set using -k option
+ 	
+The following files are produced after running this module :
+kmeans.pickle - is the pickle dump. It saves the clustering model, in this case information regarding the centroids of the clusters and indices.
+kmeans-scores.txt - mean silhouette coefficient score of each cluster which represents mean intra-cluster and mean nearest-cluster distance
+Example - 
+k	silhouette
+5	0.0312426
+8	0.039967
+7	0.0370261
+... 
+ 
+*****************************************************************************
+train.py
+*****************************************************************************
+This module generates k models using training data and clusters produced by clusters.py module. 
+It uses predict()of kmeans to predict the closest cluster for each w2v of hypernym - w2v of hyponym on training data using the kmeans-model created by cluster.py. 
+K models are created based on these clusters. 
+AdamOptimizer (https://arxiv.org/abs/1412.6980 )is used for gradient descent that has the objective to minimize the model loss.
+
+Training process depends on the modules projlearn/data.py and projlearn/baseline.py.
+-----------------------------------------------------------------------------
+projlearn/data.py
+-----------------------------------------------------------------------------
+Class definition of data to modularize and process data for train.py module.
+-----------------------------------------------------------------------------
+projlearn/baseline.py
+-----------------------------------------------------------------------------
+Class definition responsible for producing model using the baseline approach. 
+It initializes a weight matrix with random values from a normal distribution. 
+This weight matrix is later updated using gradient descent over the training data during training sessions. 
+The predicted value for a hypernym( vector value) is produced by matrix multiplication of hyponym vector and weight matrix. 
+Output error is calculated using subtraction of gold value from predicted value. 
+Error is normalized taking square root of L2 normalization of error. 
+Then Loss is produced by L2 normalization of normalized error.
+
+To learn more about L2 normalization please refer to - http://mathworld.wolfram.com/L2-Norm.html
+https://www.tensorflow.org/api_docs/python/tf/nn/l2_loss 
+L2 normalization of t would be : sum(t ^ 2) / 2)
+To learn about training models using tensor flow - 
+https://www.tensorflow.org/get_started/mnist/mechanics
+
+How does train.py operates?
+
+In the train.py, k separate training models are created for k clusters. 
+Also the models are applied to test data to produce candidate hypernyms. 
+Training data is divided into k partitions depending on their cluster, and only data samples of kth partition is used to create the kth model. 
+Test data is also divided into k partitions and only tested using respective model. 
+Only one candidate hypernym is produced per test hyponym. 
+Output of train() method in train.py is an array of vector representation of one candidate hypernym for each test hyponym. 
+Each vector is of size 50, as our w2v model contains vectors of size 50. 
+This is done for each cluster. 
+The data is written in a dictionary where key is the cluster number and value is the list of vector representation of candidate hypernyms. 
+This is written to a .npz file for later evaluation.
+
+Example vector representation:
+hyponym : charlotte
+Vector representation of candidate hypernym -
+[ 0.02274495  0.01482046  0.01766182  0.12951486 -0.00390139 -0.00540767
+  0.0210824   0.00600087  0.02251597  0.00342644  0.01465507 -0.00078556
+  0.02438924  0.00704476  0.00744285  0.01382104  0.00409981  0.0093544
+  0.01799471  0.0237184   0.01185022  0.00796911  0.01436705  0.00542552
+  0.02821547  0.01595733  0.0112587   0.01572305 -0.01299952  0.01110975
+ -0.00705034  0.00720027  0.0004786   0.01433219 -0.02279224  0.00980031
+  0.02101083 -0.01422016 -0.0058923   0.02436809 -0.00028092 -0.00356831
+  0.02477315 -0.00095858  0.01831364  0.0124851   0.02905977  0.0115137
+  0.01523943  0.02292084]
+
+Snippet from training log representing the training process - 
+<Baseline>
+Cluster 1: 58 train items and 18 test items available; using 1 steps of 58 items.
+('Cluster 1: epoch = 00001, train loss = 0.505503, test loss = 0.503334.',)
+('Cluster 1: epoch = 00010, train loss = 0.502949, test loss = 0.501387.',)
+...
+('Cluster 1: epoch = 00300, train loss = 0.325159, test loss = 0.369841.',)
+Cluster 1 done in 0:00:00.152403.
+Writing the output model to "baseline.k1.trained".
+Cluster 2: 41 train items and 4 test items available; using 1 steps of 41 items.
+('Cluster 2: epoch = 00001, train loss = 0.501522, test loss = 0.486719.',)
+...
+...
+Cluster 20: 69 train items and 30 test items available; using 1 steps of 69 items.
+('Cluster 20: epoch = 00001, train loss = 0.502761, test loss = 0.505389.',)
+...
+Cluster 20 done in 0:00:00.157355.
+Writing the output model to "baseline.k20.trained".
+Writing the test data to "baseline.test.npz".
+
+The default setting is - 
+Model : baseline
+Standard-deviation : .01
+Lambda : .10
+Random seed : 228
+Number of epochs : 300
+Batch size : 2048 
+We use the default setting to train the models.
+
+#Prerequisites :
+Training data zip ‘train.npz’ created by prepare.py 
+Test data zip ‘test.npz’ created by prepare.py
+Cluster information ‘kmeans.pickle’ created by cluster.py
+
+The following files are produced after running this module :
+baseline.k#.trained.. ; where # is cluster number. If there are 20 clusters, 20 models are trained. Three files are created for each cluster -
+baseline.k#.trained.meta
+baseline.k#.trained.index
+baseline.k#.trained.data-00000-of-00001
+baseline.test.npz
+ 
+*****************************************************************************
+evaluate.py
+*****************************************************************************
+Module for evaluating test data.
+Inputs:
+Test data zip - ‘test.npz’ created by prepare.py
+Test data output vectors zip - baseline.test.npz created by train.py
+Hyponym-hypernym test pairs - subsumptions-test.txt created by dictionary.ru.py
+Word2vec format word embedding model - path given using --w2v option in command line argument
+It is mandatory to pass the path of the directory containing all the prerequisite files. If in the same directory as module, just need to mention ./.
+It is mandatory to run using --non_optimized option, as we have not pro-processed data as required for a optimized run.
+Outputs :
+test_hypo# - list of test hyponyms
+test_gold# - gold hypernyms
+baseline_test_candidates# - candidate hypernyms
+All three files are aligned by line numbers. # represents version number of evaluate.py which is described later.
+
+We updated the evaluate.py module to make it generate outputs compatible for feeding into SemEval task evaluation module task9-scorer.py.
+Hyperstar system uses pairs of hyponym-hypernym to train models. Test data is also in the form hyponym<\tab>hypernym. 
+We created these pairs using gold training data provided by SemEval task 9. 
+Gold data has one or more hypernym associated with each hyponym. So multiple pairs could be created for the same hyponym. Example - 
+expedition	voyage
+expedition	journey 
+Was derived from - 
+hyponym	:	expedition
+hyernyms	:	voyage	journey 
+So hyponym expedition occurred twice in testing as it has 2 gold hypernyms.
+
+Hypernym projections for the test data is created by the train.py module after the training is done. 
+Resulting projections are stored in baseline.test.nzp. evaluate.py loads the projections 
+and for each projection vector generates 10 candidate hypernyms using word2vec most_similar(positive=[projection vector], topn=10) function. 
+For expedition 2 lists of hypernym candidates are generated - 
+cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates
+cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates
+
+As there could be multiple results for same hyponym we created three versions of evaluate.py -
+
+Version 1 : 
+simply concatenates the candidate hypernyms from multiple occurences of same hyponym. There could be multiple occurrences of same candidate hypernym.
+cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates	cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates
+
+Version 2 : 
+Keeps one occurrence of candidate hypernym from multiple occurences of same hyponym. 
+cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates
+
+Version 3 : 
+Keeps one occurrence of candidate hypernym from multiple occurences of same hyponym and rank the candidates in descending order of frequency.
+cunarder	tirant	bonnivard	angria	ephrinell	picture_post	lannoy	caterna	specksioneer	pyrates
+For this example every hypernym occurred twice, so it has the same output.
+
+The evaluation method used by hyperstar project is not removed from the code but it does not affect our evaluation. 
+The results are also saved from that evaluation for curious individuals. For their evaluation, they only check if gold hypernym associated with a hyponym is in the generated candidate list or not. 
+Details of the method is mentioned in [2].
+
+Ranking by frequency is not appropriate as this frequency may not carry meaningful relationship with hypernyms in terms of context or other relevant variables. 
+The other two versions ranks using the score of word2vec model, which represents a more meaningful correlation.  
+
+*****************************************************************************
+identity.py
+*****************************************************************************
+This module is used to generate candidates directly from w2v word embedding. 
+Output from this module can be used to evaluate the same test data and compare results with that of evaluate.py. 
+
+Inputs:
+Test data zip - ‘test.npz’ created by prepare.py
+Test data output vectors zip - baseline.test.npz created by train.py
+Hyponym-hypernym test pairs - Subsumptions-test.txt created by dictionary.ru.py
+Word2vec format word embedding model - path given using --w2v option in command line argument
+
+There are three versions of identity.py mirroring the functionalities of three versions of evaluate.py. 
+
+Outputs :
+i_test_hypo# - list of test hyponyms
+i_test_gold# - gold hypernyms
+i_test_candidates# - candidate hypernyms
+All three files are aligned by line numbers. # represents version number of evaluate.py
+
+*****************************************************************************
+refine_candidates.py
+*****************************************************************************
+
+Module to refine candidates produced by evaluate.py and identity.py module.
+It reads input file line by line and discards candidates which are not present in the provided vocabulary and produces refined candidate lists.
+The input file contain tab separated candidate hypernyms in each line. The output file is of the same format.
+
+Requirement :
+1A.english.vocabulary.txt - vocabulary provided by SemEval
+
+Command line arguments :
+argument 1 : input file path
+argument 2 : output file path
+
+#############################################################################
+Changes list:
+We had to make some changes to ‘hyperstar’ files to make it compatible to run in akka server(python 2.7)
+
+dictionary.ru.py
+From all ‘print’ statement  delete ‘flush=true’ and ‘file=sys.stderr’ arguments
+Replace “from gensim.models.word2vec import Word2Vec” with “import gensim”
+Replace “Word2Vec.load..” with “gensim.models.KeyedVectors.load..” while loading model 
+Set w2v.txt as default value to --w2v argument option
+Deleted all code related to load wiktionary and creating synonyms as we are not allowed to use any kind of dictionary
+Changed code segments to load data from our Hyponym-hypernym data file which has “hyponym<\t>hypernym” format in each line
+
+prepare.py
+Comment out read synonyms as we are not using synonyms 
+
+cluster.py
+Replace “with open('kmeans-scores.txt', 'w', newline='') as f:” by “with open('kmeans-scores.txt', 'w') as f:”
+Replace “with Pool(12) as pool:” by “pool=Pool(12)” and update  indentation
+
+train.py
+From all ‘print’ statement  delete ‘flush=true’ and ‘file=sys.stderr’ arguments
+
+evaluate.py
+From all ‘print’ statement  delete ‘flush=true’ and ‘file=sys.stderr’ arguments
+Replace “from gensim.models.word2vec import Word2Vec” with “import gensim”
+Replace “Word2Vec.load..” with “gensim.models.KeyedVectors.load..” while loading model 
+Set w2v.txt as default value to --w2v argument option
+Also we added snippets so that candidates are written to file.
+
+Directory ‘projlearn’:
+	baseline.py 
+Replace tf.sub with tf.subtract
+_init_.py
+Comment out all imports except ‘baseline’
+Comment out all models except ‘baseline’
+		Note : commenting out was necessary to avoid extraneous installations for the other models
+
+#####################################################################
+Summary
+#####################################################################
+We used two different kinds of models to experiment over hyperstar system. 
+Loading The models requires different code snippets; so we have two sets of the same modules with slight variations in code.
+
+#####################################################################
+Directory structures:
+#####################################################################
+
+GloVe embedding model transformed to word2vec :
+Directory structure-
+*********************************************************************
+hyperstar_for_glove_w2v
+	1A.english.vocabulary.txt
+	1A.english.training.data.txt
+	1A.english.training.gold.txt
+	Create_hypo_hyper_list_from_train_data.py
+	dictionary.ru.py 
+		prepare.py 
+		cluster.py 
+		train.py   
+		batch_sim
+			__init__.py
+			argmaxk.py
+			nn_vec.py 
+			parallel.py 
+		projlearn
+			__init__.py
+			Baseline.py
+		evaluate1.py
+	evaluate2.py
+	evaluate3.py  
+	identity1.py
+	identity2.py
+	identity3.py
+	refine_candidates.py 
+	task9-scorer.py	
+	driver.sh
+
+######################################################################
+Word2vec skipgram model :
+Directory structure-
+**********************************************************************
+hyperstar_for_skipgram_cbow_w2v
+	1A.english.vocabulary.txt
+	1A.english.training.data.txt
+	1A.english.training.gold.txt
+	Create_hypo_hyper_list_from_train_data.py
+	dictionary.ru.py 
+		prepare.py 
+		cluster.py 
+		train.py 
+		batch_sim
+			__init__.py
+			argmaxk.py
+			nn_vec.py 
+			parallel.py 
+		projlearn
+			__init__.py
+			baseline.py
+		evaluate1.py
+	evaluate2.py
+	evaluate3.py 
+	identity1.py
+	identity2.py
+	identity3.py
+	refine_candidates.py
+	task9-scorer.py 
+	driver.sh
+
+#####################################################################
+Run Instruction : 
+#####################################################################
+Run - 
+./driver.sh <path to pre-generated word2vec model to be used>
+
+#####################################################################
+Generated output files : 
+#####################################################################
+
+# = 1, 2 and 3 represents the three evaluate#.py and identity#.py
+Hyperstar results (evaluate#.py):
+
+Result from SemEval evaluation module -
+	result_eval# ; where #=1,2,3
+Refined Candidate hypernyms -
+	baseline_test_candidates#_refine  ; where #=1,2,3
+Candidate hypernyms - 
+	baseline_test_candidates#  ; where #=1,2,3
+Test hyponyms - 
+	test_hypo# ; where #=1,2,3 (all files contains same information)
+Gold hypernyms - 
+	test_gold# ; where #=1,2,3 (all files contains same information) 
+Results from hyperstar evaluation module - 
+	evalOut# ; where #=1,2,3
+
+Results direct from the word2vec models (identity#.py):
+Result from SemEval evaluation module -
+	result_i# ; where #=1,2,3
+Refined Candidate hypernyms -
+	i_test_candidates#_refine  ; where #=1,2,3
+Candidate hypernyms -
+	i_test_candidates# ; where #=1,2,3
+Test hyponyms - 
+	i_test_hypo# ; where #=1,2,3 (all files contains same information)
+Gold hypernyms - 
+	i_test_gold# ; where #=1,2,3 (all files contains same information)
+Results from hyperstar evaluation module - 
+	idenOut# ; where #=1,2,3
+	
+#####################################################################
+Generated intermediate files : 
+#####################################################################
+
+data_train_gold.csv
+subsumptions-validation.txt
+subsumptions-train.txt
+subsumptions-test.txt
+validation.npz
+train.npz
+test.npz
+Preplog
+kmeans.pickle
+kmeans-scores.txt
+baseline.k#.trained.meta
+baseline.k#.trained.index
+baseline.k#.trained.data-00000-of-00001
+baseline.test.npz
+trainlog
+
+#############################################################################
+References :
+
+[1]Fu, R., Guo, J., Qin, B., Che, W., Wang, H., & Liu, T. (2014). Learning semantic hierarchies via word embeddings. In Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (Vol. 1, pp. 1199-1209).
+[2]Ustalov, D., Arefyev, N., Biemann, C., Panchenko, A.: Negative Sampling Improves Hypernymy Extraction Based on Projection Learning. In: Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers, Valencia, Spain, Association for Computational Linguistics (April 2017) 543–550
