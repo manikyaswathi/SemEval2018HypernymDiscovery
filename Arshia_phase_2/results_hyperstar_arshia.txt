@@ -1,0 +1,723 @@
+Author : Arshia Zernab Hassan
+Team : Babbage
+
+We used hyperstar system [1] to see how methods proposed by [2] performs on our data. 
+The hyperstar system learns a projection weight from training data and applies that 
+projection on test data to predict candidate hypernyms. 
+The training and testing is done over vector representation of text words which are 
+derived from word embeddings created by pre-existing systems. We used CBOW and skip gram 
+from word2vec and also GloVe [3] system to create word embeddings using our corpus. 
+We performed the following tests on different models. 
+
+First we ran evaluation without refining the output candidates. 
+The best model for hyperstar system would be CBOW model trained 
+using normalized data with sentence boundaries removed. 
+The hyperstar system has a MRR score of 0.179584449942 
+which is an improvement over directly using CBOW on that
+test set(score MRR: 0.0257256235828). 
+The worst performing model is skip-gram, 
+where there is 0.0 score for hyperstar system 
+and from direct skip-gram the score is MRR: 0.00833333333333. 
+The performance of hyperstar on word2vec model 
+generated from GloVe model is not so well , 
+scoring only MRR: 0.0506329113924. 
+Although direct score from Golve-to-Word2vec model is 0.0.	
+
+Bag of word(CBOW) approach is working better than 
+context related(skip-gram) and co occurrence(GloVe) 
+for hyperstar for this corpus.
+For skip-gram, the generated candidates are sometimes 
+not even related to gold data candidates in terms of meaning or context.
+A very frustrating thing about GloVe results is that although the evaluation
+is giving some score, if we look into the candidate list, there are mostly numerical floating point values. 
+
+We refined the candidate sets by selecting candidates 
+that only appear in vocabulary and analyzed the improvements. 
+The score for CBOW models improved with scores MRR: 0.189726001512 and MRR: 0.0673676012461. 
+This is due to refinement in ranking as many out-of-vocabulary words were removed. 
+The skip-gram model scores did not improve at all. 
+The Glove model score improved to MRR: 0.101265822785. 
+Most inputs had no result for Glove and it only produced one candidate per input.
+
+We list the refined scores first followed by unrefined scores :
+###################################################################### 
+Results from candidate lists not refined using vocabulary
+###################################################################### 
+###################################################################### 
+W2v Model used : UMBCNewNormNOStopCBOW_20_10 (CBOW model)
+Description of data : Complete UMBC corpus normalized and no stop sign for sentence boundary.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419 
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.188601662887
+	MAP: 0.104644910645
+	P@1: 0.157142857143
+	P@3: 0.111111111111
+	P@5: 0.0970634920635
+	P@15: 0.096763183906
+evaluate2.py
+	MRR: 0.189726001512
+	MAP: 0.105537822847
+	P@1: 0.157142857143
+	P@3: 0.111111111111
+	P@5: 0.0970634920635
+	P@15: 0.0982049828478
+evaluate3.py
+	MRR: 0.0929706933278
+	MAP: 0.0553899662947
+	P@1: 0.047619047619
+	P@3: 0.0507936507937
+	P@5: 0.0548412698413
+	P@15: 0.0578122274551 
+Evaluation using w2v CBOW candidates:
+	identity1.py
+	MRR: 0.0388095238095
+	MAP: 0.0221947761233
+	P@1: 0.0047619047619
+	P@3: 0.0238095238095
+	P@5: 0.0268253968254
+	P@15: 0.0219268562126
+identity2.py
+	MRR: 0.0388095238095
+	MAP: 0.0221947761233
+	P@1: 0.0047619047619
+	P@3: 0.0238095238095
+	P@5: 0.0268253968254
+	P@15: 0.0219268562126
+identity3.py
+	MRR: 0.0380158730159
+	MAP: 0.01586144279
+	P@1: 0.0190476190476
+	P@3: 0.0190476190476
+	P@5: 0.016746031746
+	P@15: 0.013752253038
+Example candidate sets :
+Hyponym : 
+weather 
+Gold : 
+phenomenon
+Hyperstar-CBOW : 
+phenomenon	disturbance	disturb	chaotically	occurring	drift	
+CBOW : 
+weather	inclemency
+
+######################################################################
+W2v Model used : UMBCNewNormNOStopSG_20_10 (skipgram model)
+Description of data : Complete UMBC corpus - normalized and no stop sign.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+ 
+Evaluation using direct w2v skip gram candidates:
+identity1.py
+	MRR: 0.0136507936508
+	MAP: 0.0075275341942
+	P@1: 0.0
+	P@3: 0.0103174603175
+	P@5: 0.00896825396825
+	P@15: 0.00722571079714
+identity2.py
+	MRR: 0.0136507936508
+	MAP: 0.0075275341942
+	P@1: 0.0
+	P@3: 0.0103174603175
+	P@5: 0.00896825396825
+	P@15: 0.00722571079714
+identity3.py
+	MRR: 0.0130952380952
+	MAP: 0.00722065588732
+	P@1: 0.0
+	P@3: 0.00714285714286
+	P@5: 0.00873015873016
+	P@15: 0.00698761555904
+Example candidate sets :
+Hyponym : 
+weather 
+Gold : 
+Phenomenon
+Hyperstar-skipgram :
+skyey	feverous	unrisen
+skipgram:
+weather	meteorologist	winter_storm
+
+######################################################################
+W2v Model used : UMBCNewNormNoStopHearst_CBOW_20_10 (CBOW model)
+Description of data : 
+Complete UMBC corpus normalized and no stop sign for sentence boundary. 
+Data retrieved using hearst pattern is also included.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3967 
+No of Validation pairs : 1403 
+No of Test pairs : 1399
+Evaluation using hyperstar candidates:
+
+evaluate1.py
+	MRR: 0.0673676012461
+	MAP: 0.0239982093019
+	P@1: 0.0514018691589
+	P@3: 0.0319314641745
+	P@5: 0.0227414330218
+	P@15: 0.0174455347353
+evaluate2.py
+	MRR: 0.0673676012461
+	MAP: 0.0239982093019
+	P@1: 0.0514018691589
+	P@3: 0.0319314641745
+	P@5: 0.0227414330218
+	P@15: 0.0174455347353
+evaluate3.py
+	MRR: 0.0409323542501
+	MAP: 0.0204519995408
+	P@1: 0.0140186915888
+	P@3: 0.0257009345794
+	P@5: 0.0205607476636
+	P@15: 0.019003167134
+	
+Evaluation using w2v CBOW candidates:
+identity1.py
+	MRR: 0.0190809968847
+	MAP: 0.0101114314899
+	P@1: 0.0
+	P@3: 0.00934579439252
+	P@5: 0.0103582554517
+	P@15: 0.0104641205108
+identity2.py
+
+	MRR: 0.0190809968847
+	MAP: 0.0101114314899
+	P@1: 0.0
+	P@3: 0.00934579439252
+	P@5: 0.0103582554517
+	P@15: 0.0104641205108
+identity3.py
+	MRR: 0.0252336448598
+	MAP: 0.0101529683539
+	P@1: 0.0140186915888
+	P@3: 0.0109034267913
+	P@5: 0.0117601246106
+	P@15: 0.00906225135197	
+Example candidate sets :
+Hyponym : winner 
+Gold : 
+person
+Hyperstar-CBOW :
+show	actually	profit	just	millionaire	story	simply	gimmick	person	
+CBOW:
+winner	prize	finalist	runner-up	winning	contest	semifinalist	
+
+######################################################################
+W2v Model used : UMBCNewNormNOStopSG_20_10 (skipgram model)
+Description of data : Complete UMBC corpus - normalized and no stop sign. 
+Data retrieved using hearst pattern is also included
+
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3967 
+No of Validation pairs : 1403 
+No of Test pairs : 1399
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+ 
+Evaluation using direct w2v skip gram candidates:
+identity1.py
+	MRR: 0.0201713395639
+	MAP: 0.0111447958411
+	P@1: 0.0
+	P@3: 0.0116822429907
+	P@5: 0.0134735202492
+	P@15: 0.0112818775202
+identity2.py
+	MRR: 0.0201713395639
+	MAP: 0.0111447958411
+	P@1: 0.0
+	P@3: 0.0116822429907
+	P@5: 0.0134735202492
+	P@15: 0.0112818775202
+identity3.py
+	MRR: 0.0245327102804
+	MAP: 0.0107034666614
+	P@1: 0.00934579439252
+	P@3: 0.0147975077882
+	P@5: 0.0123052959502
+	P@15: 0.00917907378188
+
+Example candidate sets :
+Hyponym : winner 
+Gold : person
+Hyperstar-skipgram :
+<no result>	
+skipgram:
+winner	winning	prize	won	runner-up	finalist
+
+Hyponym : tutankhamun 
+Gold : person	pharaoh	expression
+Hyperstar-skipgram :
+wonder_woman	
+skipgram:
+tutankhamen	tut	hawass
+
+######################################################################
+W2v Model used : w2v_6.txt (w2v from glove model)
+Description of data : 
+Complete UMBC corpus - normalized and no stop sign.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 79
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 1125
+No of Validation pairs : 377
+No of Test pairs : 396
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.101265822785
+	MAP: 0.0496068863157
+	P@1: 0.101265822785
+	P@3: 0.0527426160338
+	P@5: 0.0459915611814
+	P@15: 0.0426307869346
+evaluate2.py
+	MRR: 0.101265822785
+	MAP: 0.0496068863157
+	P@1: 0.101265822785
+	P@3: 0.0527426160338
+	P@5: 0.0459915611814
+	P@15: 0.0426307869346
+evaluate3.py
+	MRR: 0.101265822785
+	MAP: 0.0496068863157
+	P@1: 0.101265822785
+	P@3: 0.0527426160338
+	P@5: 0.0459915611814
+	P@15: 0.0426307869346 
+Evaluation using w2v CBOW candidates:
+	identity1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+identity2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+identity3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+
+Example candidate sets :
+Hyponym : wheeler
+Gold : 
+manufacture	horse	proclivity	person	artisan	rider
+Hyperstar-glove :
+person			
+glove:
+wheeler
+
+
+###################################################################### 
+Results from candidate lists not refined using vocabulary
+###################################################################### 
+###################################################################### 
+
+W2v Model used : UMBCNewNormNOStopCBOW_20_10 (CBOW model)
+Description of data : Complete UMBC corpus normalized and no stop sign for sentence boundary.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419 
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.179584449942
+	MAP: 0.0941171614981
+	P@1: 0.157142857143
+	P@3: 0.103968253968
+	P@5: 0.0875396825397
+	P@15: 0.0852514681086
+evaluate2.py
+	MRR: 0.179981275338
+	MAP: 0.0942118763071
+	P@1: 0.157142857143
+	P@3: 0.103968253968
+	P@5: 0.0875396825397
+	P@15: 0.0855689284261
+evaluate3.py
+	MRR: 0.0555667744953
+	MAP: 0.0334599342456
+	P@1: 0.0238095238095
+	P@3: 0.0301587301587
+	P@5: 0.034126984127
+	P@15: 0.0360532589104
+ 
+Evaluation using w2v CBOW candidates:
+identity1.py
+	MRR: 0.0257256235828
+	MAP: 0.0154841437222
+	P@1: 0.0
+	P@3: 0.015873015873
+	P@5: 0.0171428571429
+	P@15: 0.016371300657
+identity2.py
+	MRR: 0.0257256235828
+	MAP: 0.0154841437222
+	P@1: 0.0
+	P@3: 0.015873015873
+	P@5: 0.0171428571429
+	P@15: 0.016371300657
+identity3.py
+	MRR: 0.022955404384
+	MAP: 0.0108807171664
+	P@1: 0.0047619047619
+	P@3: 0.0111111111111
+	P@5: 0.0126984126984
+	P@15: 0.0109291237863
+
+Example candidate sets :
+Hyponym : 
+weather 
+Gold : 
+phenomenon
+Hyperstar-CBOW : 
+phenomenon	phenomena	disturbance	seich	disturb	chaotically	occurring	fluctuat	sloshing	drift
+CBOW : 
+weather	weather\	emergency_weather	inclimate	inclemency	tv_weather	network_weather	weather-related	scale_weather	satellite_weather
+
+######################################################################
+W2v Model used : UMBCNewNormNOStopSG_20_10 (skipgram model)
+Description of data : Complete UMBC corpus - normalized and no stop sign.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+	evaluate1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+ 
+Evaluation using direct w2v skip gram candidates:
+identity1.py
+	MRR: 0.00833333333333
+	MAP: 0.00391906858574
+	P@1: 0.0
+	P@3: 0.0047619047619
+	P@5: 0.00444444444444
+	P@15: 0.00365428222571
+identity2.py
+	MRR: 0.00833333333333
+	MAP: 0.00391906858574
+	P@1: 0.0
+	P@3: 0.0047619047619
+	P@5: 0.00444444444444
+	P@15: 0.00365428222571
+identity3.py
+	MRR: 0.00679138321995
+	MAP: 0.00369609050561
+	P@1: 0.0
+	P@3: 0.0031746031746
+	P@5: 0.00444444444444
+	P@15: 0.00392639106925
+
+Example candidate sets :
+Hyponym : 
+weather 
+Gold : 
+Phenomenon
+Hyperstar-skipgram :
+middle-twenti	heat-wav	skyey	molion	snow-balling	taahauku	sea-line	feverous	unrisen	desolate-looking
+skipgram:
+weather	winter_weather	national_weather	meteorologist	weather_web	weather-dependent	intellicast	thundershow	winterstorm	winter_storm
+
+######################################################################
+W2v Model used : UMBCNewNormNoStopHearst_CBOW_20_10 (CBOW model)
+Description of data : 
+Complete UMBC corpus normalized and no stop sign for sentence boundary. 
+Data retrieved using hearst pattern is also included.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419 
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.0410436137072
+	MAP: 0.0135398358996
+	P@1: 0.0373831775701
+	P@3: 0.0140186915888
+	P@5: 0.0126947040498
+	P@15: 0.0100019399085
+evaluate2.py
+	MRR: 0.0422526850097
+	MAP: 0.0138696877716
+	P@1: 0.0373831775701
+	P@3: 0.0140186915888
+	P@5: 0.0126947040498
+	P@15: 0.011049801704
+evaluate3.py
+	MRR: 0.017836913865
+	MAP: 0.010146718114
+	P@1: 0.00467289719626
+	P@3: 0.0116822429907
+	P@5: 0.0109034267913
+	P@15: 0.0105639687415
+ 
+Evaluation using w2v CBOW candidates:
+identity1.py
+	MRR: 0.0140372348316
+	MAP: 0.00722424857939
+	P@1: 0.0
+	P@3: 0.00623052959502
+	P@5: 0.00763239875389
+	P@15: 0.00773826381303
+identity2.py
+	MRR: 0.0140372348316
+	MAP: 0.00722424857939
+	P@1: 0.0
+	P@3: 0.00623052959502
+	P@5: 0.00763239875389
+	P@15: 0.00773826381303
+identity3.py
+	MRR: 0.0163996439697
+	MAP: 0.00782171186377
+	P@1: 0.00467289719626
+	P@3: 0.00778816199377
+	P@5: 0.00872274143302
+	P@15: 0.00789402705291
+	
+Example candidate sets :
+Hyponym : winner 
+Gold : 
+person
+Hyperstar-CBOW :
+show	actually	profit	just	millionaire	story	simply	gimmick	flipside	person	
+CBOW:
+winner	prize	finalist	runners-up	runner-up	winning	first-place	contest	semifinalist	grand-prize	
+
+######################################################################
+W2v Model used : UMBCNewNormNOStopSG_20_10 (skipgram model)
+Description of data : Complete UMBC corpus - normalized and no stop sign. 
+Data retrieved using hearst pattern is also included
+
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 210
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 3921
+No of Validation pairs : 1419
+No of Test pairs : 1069
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+evaluate3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+ 
+Evaluation using direct w2v skip gram candidates:
+identity1.py
+	MRR: 0.0157506304703
+	MAP: 0.00807205688047
+	P@1: 0.0
+	P@3: 0.00778816199377
+	P@5: 0.00739875389408
+	P@15: 0.00894542892206
+identity2.py
+	MRR: 0.0157506304703
+	MAP: 0.00807205688047
+	P@1: 0.0
+	P@3: 0.00778816199377
+	P@5: 0.00739875389408
+	P@15: 0.00894542892206
+identity3.py
+	MRR: 0.0140706126687
+	MAP: 0.00654644248102
+	P@1: 0.00467289719626
+	P@3: 0.00778816199377
+	P@5: 0.00716510903427
+	P@15: 0.00684262518375
+
+	Example candidate sets :
+Hyponym : winner 
+Gold : 
+person
+Hyperstar-skipgram :
+life_policy	advertising_intelligence	1120-f	tivo_service	earn-in	evelop	ssa_benefit	peuchner	post-buy	518a	
+skipgram:
+winner	winning	runners-up	prize	first-place	won	second-place	runner-up	finalist	third-place
+
+######################################################################
+W2v Model used : w2v_6.txt (w2v from glove model)
+Description of data : 
+Complete UMBC corpus - normalized and no stop sign.
+Description of hyperstar model creation :
+Seed for random sampling of train, validation and test data : 228 (default)
+No of test input hyponyms : 79
+No of hyponym-hypernym pairs (Please refer to main report for clarification):
+No of training pairs : 1125
+No of Validation pairs : 377
+No of Test pairs : 396
+Evaluation using hyperstar candidates:
+evaluate1.py
+	MRR: 0.0506329113924
+	MAP: 0.0369901547117
+	P@1: 0.0506329113924
+	P@3: 0.035864978903
+	P@5: 0.035864978903
+	P@15: 0.035864978903
+evaluate2.py
+	MRR: 0.0506329113924
+	MAP: 0.0369901547117
+	P@1: 0.0506329113924
+	P@3: 0.035864978903
+	P@5: 0.035864978903
+	P@15: 0.035864978903
+evaluate3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+ 
+Evaluation using w2v CBOW candidates:
+identity1.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+identity2.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+identity3.py
+	MRR: 0.0
+	MAP: 0.0
+	P@1: 0.0
+	P@3: 0.0
+	P@5: 0.0
+	P@15: 0.0
+
+Example candidate sets :
+Hyponym : wheeler
+Gold : 
+manufacture	horse	proclivity	person	artisan	rider
+Hyperstar-glove :
+-0.124900	-0.103862	.307078	72590well-inscribed	.319586	._radio	.208970	ory_council	latter-type	eloglavec	person	non-phlogistic	a.mdeccazenovia	3612drive_mapping_panel	009638	0.378203	0.629317	ata_inversion	3pipvic_activ	835slime-shaped	0.311352	.835079	367748	untain_bothi	0.503766	.036855	8sharon_dunwoody	ty_school_teacher	seph_may	culture_development			
+glove:
+wheeler	lpha-phosphate	-0.038789	0.309252	williams_memorial_institute	0.148035	-0.496385	0.250410	-0.058767	0.113693virginity_check	
+
+
+[1]Ustalov, D., Arefyev, N., Biemann, C., Panchenko, A.: Negative Sampling Improves Hypernymy Extraction Based on Projection Learning. In: Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers, Valencia, Spain, Association for Computational Linguistics (April 2017) 543–550
+
+[2]Fu, R., Guo, J., Qin, B., Che, W., Wang, H., & Liu, T. (2014). Learning semantic hierarchies via word embeddings. In Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (Vol. 1, pp. 1199-1209).
+
+[3] Pennington, J., Socher, R., & Manning, C. (2014). Glove: Global vectors for word representation. In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP) (pp. 1532-1543).

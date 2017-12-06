@@ -1,0 +1,13 @@
+Author : Arshia Zernab Hassan
+Team : Babbage
+
+Directory : hyperstar_for_skipgram_cbow_w2v and hyperstar_for_glove_w2v
+	Original Project developed by Ustalov et al. [1]
+	Project link : https://github.com/nlpub/hyperstar
+
+Directory : create_glove_w2v
+	Original project developed by [2]
+	Project link : http://github.com/stanfordnlp/glove
+
+[1] Ustalov, D., Arefyev, N., Biemann, C., Panchenko, A.: Negative Sampling Improves Hypernymy Extraction Based on Projection Learning. In: Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers, Valencia, Spain, Association for Computational Linguistics (April 2017) 543–550
+[2] Pennington, J., Socher, R., & Manning, C. (2014). Glove: Global vectors for word representation. In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP) (pp. 1532-1543).

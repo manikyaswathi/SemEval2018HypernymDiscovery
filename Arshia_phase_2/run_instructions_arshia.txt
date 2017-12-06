@@ -1,0 +1,45 @@
+Author : Arshia Zernab Hassan
+Team : Babbage
+
+To produce output using a word2vec (CBOW/skip-gram) model -
+	
+	Create CBOW/skip-gram model using (normalized) data corpus.
+	Or, Download sample CBOW model from - https://drive.google.com/open?id=1yo5war0dWTKsQi6Qk0je48QCIWqt90vg 
+		There are three files in the directory which should be all present together in order for the model to work. 
+			UMBCNewNormNOStopCBOW_20_10 (This is the main model)
+			UMBCNewNormNOStopCBOW_20_10.syn1neg.npy (Secondary file)
+			UMBCNewNormNOStopCBOW_20_10.wv.syn0.npy (Secondary file)
+	
+	In directory "hyperstar_for_skipgram_cbow_w2v" run -
+		./driver.sh <path to pre-generated word2vec model to be used>
+		
+	Example run -
+		./driver.sh UMBCNewNormNOStopCBOW_20_10
+			Assuming model is in directory "hyperstar_for_skipgram_cbow_w2v" too.
+			
+			
+To produce output using a GloVe (CBOW/skip-gram) model -
+	
+	Download normalized data from - 
+		https://drive.google.com/open?id=1ZPzg5ctUtnUDAxb7M6nwUFG_Pk65Of1J
+
+	The whole data is contained in a single file called merged_data.norm.3
+	
+	Create GloVe model :
+	From directory create_glove_w2v run - 
+		./experiment.sh <path to normalized data file>
+	
+	If data file is in directory create_glove_w2v run -
+		./experiment.sh merged_data.norm.3
+		
+	This will produce vectors.txt which is the GloVe text format model.
+	
+	To convert it to word2vec format run - 
+		python -m gensim.scripts.glove2word2vec –i vectors.txt –o w2v.txt
+		
+	To produce output using the new model -
+		Go to directory "hyperstar_for_glove_w2v"
+		Run - ./driver.sh ../create_glove_w2v/w2v.txt
+			
+	You can download a pre-generated GloVe-W2V model from here -
+		https://drive.google.com/open?id=1m9y4oHhqRK-rGs6SLzxV_SJXBeSNHrC4

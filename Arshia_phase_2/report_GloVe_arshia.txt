@@ -1,0 +1,115 @@
+Author : Arshia Zernab Hassan
+Team : Babbage
+
+
+GloVe [1] is a project for generating word embedding models from corpus. 
+We used the project to generate GloVe word embedding model, which is later converted to word2vec format model to use in our project.
+
+Project Webpage : https://github.com/stanfordnlp/GloVe
+
+Download and build :
+git clone http://github.com/stanfordnlp/glove
+cd glove && make
+
+##############################################################################
+Project overview: 
+##############################################################################
+Original GloVe Directory structure:
+1. README states short descriptions of the tools.
+2. src directory contains the source files written in c - cooccur.c , glove.c , shuffle.c , vocab_count.c
+3. build directory contains the object files for the four tools. 
+   These tools are run serially and output from previous tools are used in latter ones.
+	a. vocab_count - count unigrams in corpus and creates a vocabulary file.
+	b. cooccur - create a binary file containing word-word co-occurrence data from corpus. 
+	   This uses vocabulary file produced by tool vocab_count.
+	c. shuffle - shuffles the co-occurrence data produced by cooccur
+	d. glove - creates a GloVe style model. 
+	   This uses vocabulary file produced by tool vocab_count and co-occurrence data produced by shuffle.
+4. eval directory contains evaluation tools in matlab, octave and python. 
+   It also contains example test files to test word analogy.
+5. demo.sh is a demo program that downloads a corpus and executes the tools sequentially
+   to produce a model and evaluates some given test files to produce statistics.
+   
+Files used in our project :
+
+experiment.sh
+build
+	vocab_count
+	cooccur
+	shuffle 
+	glove
+
+src folder is also included for convenience.
+	
+##############################################################################
+To create a model in GloVe format - 
+##############################################################################
+We used the demo.sh to create a bash (experiment.sh) to create our own models. 
+Most of the code is same except that we deleted the evaluation part from demo.sh as we only need to generate a model. 
+Path to a normalized data file should be passed as a mandatory argument while running experiment.sh.
+
+To run experiment.sh - 
+	./experiment.sh <path to normalized data file>
+
+Normalized data file can be downloaded from -
+		https://drive.google.com/open?id=1ZPzg5ctUtnUDAxb7M6nwUFG_Pk65Of1J
+
+Also the following commands can be run to create a model.
+ 
+To create a vocabulary ‘vocab.txt’ using corpus file ‘merged_data’ run - 
+/build/vocab_count -verbose 2 < merged_data > vocab.txt
+
+To create a cooccurrence binary file ‘cooccurrence.bin’ using corpus file ‘merged_data’ run - 
+/build/cooccur -memory 4.0 -vocab-file vocab.txt -verbose 2 -window-size 15 < merged_data > cooccurrence.bin
+Here window size is 15
+
+To create a shuffled cooccurrence binary file ‘cooccurrence.shuf.bin’ using ‘cooccurrence.bin’ run - 
+/build/shuffle -memory 4.0 -verbose 2 < cooccurrence.bin > cooccurrence.shuf.bin
+
+To create a GloVe model ‘vectors.bin’ and ‘vectors.txt’ using ‘cooccurrence.shuf.bin’ and ‘vocab.txt’ run with vector-size of 50 and 15 iterations - 
+/build/glove -save-file vectors -threads 8 -input-file cooccurrence.shuf.bin -x-max 10 -iter 15 -vector-size 50 -binary 2 -vocab-file vocab.txt -verbose 2
+
+##############################################################################
+Convert GloVe model to Word2Vec - 
+##############################################################################
+
+A GloVe model can be converted to a Word2Vec format model using the following command - 
+python -m gensim.scripts.glove2word2vec –i <GloVe vector file .txt> –o <Word2vec vector file .txt>
+
+##############################################################################
+Model description:
+##############################################################################
+
+We used a window size of 15 and also 15 iterations to generate vectors of size 50.
+We created two different models.
+
+Model 1 : 
+Data corpus used here is normalized data described in data section. 
+Lines may have several sentences separated by ‘.’ and also there is a empty line separating two consecutive lines. 
+All text files from corpus were merged into a single file. We could not find any method to create model using more than one file.
+ 
+Note : While running the tools there was an error stating could not process corpus with <unk> tag. We  had to replace <unk> with <raw_unk> as suggested by the error message.
+cat merged_data | sed -e 's/<unk>/<raw_unk>/g' > merged_data.new 
+
+We later did not consider the model anymore as it performed worse than model2.
+
+Model 2 : 
+README provided in the GloVe github suggests that corpus should be of white-space separated tokens. 
+The example corpus file they provided with demo.sh (text8) has complete data written in a single line, meaning there is no ‘\n’. 
+Also there was no punctuations. So we further normalized our data to fit to this profile. 
+We used the following command line instructions to create such a corpus from previous one file corpus.
+
+cat merged_data.new | sed -e 's/\. //g' > merged_data.norm
+This got rid of the full stops. Word count reduced from 1911670635  to 1774947225
+
+tr -d '\n' < merged_data.norm > merged_data.norm.2
+This got rid of the newline character, reducing the line number to 1.
+
+tr -d '\?' < merged_data.norm.2 > merged_data.norm.3
+This got rid of the ‘?’. 
+
+##############################################################################
+Reference
+
+##############################################################################
+[1] Pennington, J., Socher, R., & Manning, C. (2014). Glove: Global vectors for word representation. In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP) (pp. 1532-1543).
