@@ -1,5 +1,6 @@
 UMDuluth-CS8761-Babbage
-	|_Stage_2
+	|_README_main.txt
+	|_System_Babbage
 		|_install.sh
 		|_Babbage_System
 			|_Tools
@@ -78,21 +79,34 @@ UMDuluth-CS8761-Babbage
 						|_vocab_count
 				|_stemmer
 			|_Output
-				|_Stage1_norm.txt
-				|_Stage1_hearst.txt
-				|_Stage2_ISA.txt
-				|_Phi01.txt
-				|_Phi02.txt
-				|_Merged_1_2.txt
-				|_Merged_4_5.txt
-				|_Merged_6_7.txt
-				|_Merged_3_8.txt
-				|_Evalution.txt
-				|_ReadMe.txt
-			|_Swathi_project_report.txt
-			|_RESULTS2.TXT
+				|_Sample_Output_Train
+					|_1A.english.Model1.training.op.txt
+					|_1A.english.output.train.hearst.txt
+					|_1A.english.output.train.norm.txt
+					|_1A.english.training.data.txt
+					|_1A.english.training.gold.txt
+					|_Evaluation_Report.LOG
+					|_input.con.txt
+					|_input.ent.txt
+					|_Model1.LOG
+					|_Model2.LOG
+					|_RES.CON.TXT
+					|_RES.ENT.TXT
+					|_Stage1_norm_hearst.txt
+					|_Stage1_Stage2_PHIModule.txt
+					|_Stage2_Model1_Stage1_Stage2_PHIModule.txt
+					|_Stage2_Model1_train.txt
+					|_Stage2_PHI_01_02.txt
+					|_Stage2_Phi01_train.txt
+					|_Stage2_Phi02_train.txt
+				|_Sample_Output_Trial
+					|_1A.english.Model1.trial.op.tx
+					|_1A.english.Model1.trial.op.txt
+					|_Evaluation_Report.LOG
+				|_output_README.txt
+			|_Install.sh
+			|_runIt_C.sh
 			|_runIt.sh
-			|_ Main_ReadMe.txt
-	|_Stage_1
+	|_Stage1_Babbage
 		|_install.sh
 		|_UMDuluth-CS8761-Babbage.zip
