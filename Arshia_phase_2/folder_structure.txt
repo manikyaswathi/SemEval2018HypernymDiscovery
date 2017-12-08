@@ -77,7 +77,22 @@ UMDuluth-CS8761-Babbage
 						|_glove
 						|_shuffle
 						|_vocab_count
-				|_stemmer
+				|_stemming-1.0
+					|_setup.py
+					|_setup.cfg
+					|_PKG-INFO
+					|_stemming.egg-info
+						|_stemming.egg-info
+						|_PKG-INFO
+						|_SOURCES.txt
+						|_top_level.txt
+						|_zip-safe
+					|_stemming
+						|___init__.py
+						|_lovins.py
+						|_paicehusk.py
+						|_porter.py
+						|_porter2.py
 			|_Output
 				|_Sample_Output_Train
 					|_1A.english.Model1.training.op.txt
