@@ -3,8 +3,71 @@ UMDuluth-CS8761-Babbage
 	|_System_Babbage
 		|_install.sh
 		|_Babbage_System
-			|_Tools
-				|_
+			|_tools
+				|_DataHIsA
+					|_delorme.com_shu.pages_0_ISaat.txt
+					|_mbta.com_mtu.pages_0_ISaat.txt
+					|_ucdavis_wnba.pages_0_ISaat.txt
+					|_utexas_iit.pages_0_ISaat.txt
+					|_weather.yahoo_bbk.ac.pages_0_ISaat.txt
+				|_DataNH
+					|_delorme.com_shu.pages_0_HA.txt
+					|_mbta.com_mtu.pages_0_HA.txt
+					|_ucdavis_wnba.pages_0_HA.txt
+					|_utexas_iit.pages_0_HA.txt
+					|_weather.yahoo_bbk.ac.pages_0_HA.txt
+				|_DataNN
+					|_delorme.com_shu.pages_0_Norm.txt
+					|_mbta.com_mtu.pages_0_Norm.txt
+					|_ucdavis_wnba.pages_0_Norm.txt
+					|_utexas_iit.pages_0_Norm.txt
+					|_weather.yahoo_bbk.ac.pages_0_Norm.txt
+				|_DataNN_NH
+					|_delorme.com_shu.pages_0_HA.txt
+					|_mbta.com_mtu.pages_0_HA.txt
+					|_ucdavis_wnba.pages_0_HA.txt
+					|_utexas_iit.pages_0_HA.txt
+					|_weather.yahoo_bbk.ac.pages_0_HA.txt
+					|_delorme.com_shu.pages_0_Norm.txt
+					|_mbta.com_mtu.pages_0_Norm.txt
+					|_ucdavis_wnba.pages_0_Norm.txt
+					|_utexas_iit.pages_0_Norm.txt
+					|_weather.yahoo_bbk.ac.pages_0_Norm.txt
+				|_HIsA
+					|_delorme.com_shu.pages_0_ISaat.txt
+					|_mbta.com_mtu.pages_0_ISaat.txt
+					|_ucdavis_wnba.pages_0_ISaat.txt
+					|_utexas_iit.pages_0_ISaat.txt
+					|_weather.yahoo_bbk.ac.pages_0_ISaat.txt
+				|_NH
+					|_delorme.com_shu.pages_0_HA.txt
+					|_ucdavis_wnba.pages_0_HA.txt
+					|_utexas_iit.pages_0_HA.txt
+					|_weather.yahoo_bbk.ac.pages_0_HA.txt
+				|_NN
+					|_mbta.com_mtu.pages_0_Norm.txt
+					|_ucdavis_wnba.pages_0_Norm.txt
+					|_weather.yahoo_bbk.ac.pages_0_Norm.txt
+				|_stemming
+					|___init__.py
+					|_lovins.py
+					|_paicehusk.py
+					|_porter.py
+					|_porter2.py
+				|_UMBC_webbase_sample
+					|_delorme.com_shu.pages_0.possf2
+					|_mbta.com_mtu.pages_0.possf2
+					|_ucdavis_wnba.pages_0.possf2
+					|_utexas_iit.pages_0.possf2
+					|_weather.yahoo_bbk.ac.pages_0.possf2
+				|_1A.english.vocabulary_1.txt
+				|_CBOW_w20_m10
+				|_Create_word2vec_embedding.py
+				|_Hearst_Pattern_Stage2_IsA.py
+				|_Hearst_Patterns_Stage2_Norm_6.py
+				|_Norlaization_Stage2.py
+				|_readMe.txt
+				|_SampleRun.sh
 			|_Src
 				|_
 			|_ORIGINS_arshia.txt
