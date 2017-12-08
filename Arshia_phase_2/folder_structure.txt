@@ -9,6 +9,9 @@ UMDuluth-CS8761-Babbage
 				|_
 			|_ORIGINS_arshia.txt
 			|_Third_party_Modules
+				|_ORIGINS_arshia.txt
+				|_ORIGINS_swathi.txt
+				|_readMe.txt
 				|_report_GloVe_arshia.txt
 				|_report_hyperstar_arshia.txt
 				|_results_hyperstar_arshia.txt
