@@ -1,0 +1,21 @@
+\S+/jj \S+/nn \S+/nn
+\S+/rb \S+/nn
+\S+/jj \S+/nn
+\S+/jj \S+/jj \S+/nn
+\S+/nn
+\S+/nns \S+/nns
+\S+/nns
+\S+/vbn \S+/nn
+\S+/nn \S+/in \S+/nn
+\S+/nn \S+/nn \S+/nn
+\S+/nn \S+/nns
+\S+/nn \S+/nn
+\S+/cd \S+/nn
+\S+/nn \S+/jj \S+/nn
+\S+/vbg \S+/nn
+\S+/dt \S+/nn
+\S+/nns \S+/nn
+\S+/vb \S+/nn
+\S+/jj \S+/nns
+\S+/nn \S+/cc \S+/nn
+\S+/nn \S+/in \S+/nns
