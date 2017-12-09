@@ -1,0 +1,50 @@
+dirham	concept
+sociology department	concept
+burger king	entity
+fertility rate	concept
+drug_of_abuse	concept
+griselda	entity
+tim tebow	entity
+sedative	concept
+relcom	entity
+lemongrass	concept
+honorable discharge	concept
+tussle	concept
+in-joke	concept
+shambles	concept
+bierstadt	entity
+gamesmanship	concept
+calmodulin	concept
+shellac	concept
+pinot blanc	concept
+emmeline pankhurst	entity
+pinny	concept
+polysemy	concept
+neon genesis evangelion	entity
+starcraft	entity
+konstantin tsiolkovsky	entity
+catechumen	concept
+bloodguilt	concept
+hurricane iniki	entity
+cloister	concept
+don mckellar	entity
+funen	entity
+showroom	concept
+kralendijk	entity
+burgh	concept
+palisade	concept
+cromford canal	entity
+minnamurra	entity
+cingulate gyrus	concept
+nsanje	entity
+quebec	entity
+marquee	concept
+heming	entity
+timepiece	concept
+roundhouse	concept
+tahini	concept
+entente	concept
+jurmo	entity
+boatlift	concept
+dragonfly	concept
+matthew murphy	entity
