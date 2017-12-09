@@ -1,0 +1,50 @@
+monetary_unit
+academic_department	department	dept
+eating_house	eating_place	restaurant	eatery	chain_store	company	enterprise	foodservice
+rate	ratio	magnitude
+drug
+opera	musical_work	drama	dramatic_play	classical_music
+quarterback	person
+psychoactive_drug	mind-altering_drug	psychoactive_substance	drug	pharmaceutical_drug	medicinal_drug	medicine	medicament	sedative-hypnotic	sedative-hypnotic_drug	psychotropic_agent
+network	computer_network	computer_networking	information_network	communications_system	telecommunication_system	telecom_system	information_processing_system	communication_system	facility
+grass	oil	plant	herb	angiosperm	supermolecule	macromolecule
+discharge	dismission	termination	conclusion	ending
+combat	contest	fighting	fight
+joke	gag
+disorder
+borough	town
+unfairness	inequity	unjustness	injustice
+protein	biopolymer	supermolecule	macromolecule	biomolecule	polymer
+lac	resin	varnish	secretion
+grapevine	grape_vine	white_wine	vine	wine	vino	alcoholic_beverage	alcoholic_drink	drink
+political_leader	politician	leader
+dress	clothes
+ambiguity
+manga	serial	television_series	tv_program	series	television_program	tv_show	television_show	tv_series	anime
+video_game	pc_game	computer_game	videogaming	comic	electronic_game	scientifiction
+rocket_engineer	rocket_scientist	applied_scientist	person
+student
+guilt	guiltiness
+tropical_cyclone	hurricane	tempest	cyclone	atmospheric_phenomenon	windstorm
+residence	courtyard	cortile	court	garden	topological_manifold	fund	store	stock	physical_system	cartography	mapmaking	written_document	mathematical_space	topological_space	manifold	hausdorff_space
+writer	person
+island	isle
+panopticon
+town	city	provincial_capital	capital
+borough	town
+fortification	wall	barrier	defense	defensive_structure
+canal	waterway	waterbody	body_of_water
+movie	film
+neural_structure	anatomical_structure
+town	city
+provincial_capital	capital	city	album	record_album	studio_album	province	canadian_province
+shelter
+actor	person	company
+measuring_instrument	measuring_device
+workplace
+paste	condiment
+agreement	concord	alinement	coalition	alignment	understanding
+island	isle
+lock	canal_lock	lock_chamber
+insect	odonate	animal
+musician	person
