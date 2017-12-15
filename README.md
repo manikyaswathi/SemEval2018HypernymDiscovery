@@ -1,1 +1,0 @@
-# SemEval-2018-Task-9-Hypernym-Discovery
