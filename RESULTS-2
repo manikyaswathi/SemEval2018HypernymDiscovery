@@ -1,1 +1,61 @@
+Results from TRAINING Data
+9. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] RESULTS 
+            File : Stage2_Model1_Stage1_Stage2_PHIModule.txt
+ ***************************************************************** 
+MRR: 0.1514500074
+MAP: 0.145593864161
+R-P: 0.139695247345
+P@1: 0.112
+P@5: 0.0476
+P@15: 0.0213777777778
+ SEPARATING [FINAL] RESULTS 
+ SEPARATING [GOLD] DATA 
+ 10. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] CONCEPT RESULTS 
+            File : RES.CON.TXT
+ ************************************************************************** 
+MRR: 0.177263478208
+MAP: 0.171514316841
+R-P: 0.165660196687
+P@1: 0.126659856997
+P@5: 0.0574055158325
+P@15: 0.0262853251617
+ 11. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] ENTITY RESULTS 
+            File : RES.ENT.TXT
+ ************************************************************************** 
+MRR: 0.102944464365
+MAP: 0.0968872937683
+R-P: 0.0909050642256
+P@1: 0.084452975048
+P@5: 0.0291746641075
+P@15: 0.0121561100448
 
+Reults from TRIAL Data
+ 9. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] RESULTS 
+            File : Stage2_Model1_Stage1_Stage2_PHIModule.txt
+ ***************************************************************** 
+MRR: 0.258333333333
+MAP: 0.255
+R-P: 0.251666666667
+P@1: 0.22
+P@5: 0.072
+P@15: 0.024
+ SEPARATING [FINAL] RESULTS 
+ SEPARATING [GOLD] DATA 
+ 10. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] CONCEPT RESULTS 
+            File : RES.CON.TXT
+ ************************************************************************** 
+MRR: 0.197222222222
+MAP: 0.197222222222
+R-P: 0.197222222222
+P@1: 0.133333333333
+P@5: 0.0666666666667
+P@15: 0.0222222222222
+ 11. RESULTS FOR: Module 1 + (STAGE 1 + PHI MODULE) [FINAL] ENTITY RESULTS 
+            File : RES.ENT.TXT
+ ************************************************************************** 
+MRR: 0.35
+MAP: 0.341666666667
+R-P: 0.333333333333
+P@1: 0.35
+P@5: 0.08
+P@15: 0.0266666666667
