@@ -1,0 +1,647 @@
+             Stage 2 Contribution Report
+The follwoing is the text version of Swathi_stage2_report.odt
+-------------------------------------------------------------
+Team :         Babbage
+
+Member : Manikya Swathi Vallabhajosyula
+
+
+                                  Background(stage 1)
+--------------------------------------------------------------------------------------------------------
+Small brief about stage 1 per-processing and
+functionality
+A. Preprocessing the data: (Swathi)
+-----------------------------------
+- Normalization: the vocabulary file is analyzed for tri-gram and bi-gram POS tag patterns. Used the
+top 20 patterns to determine all the candidate bi-gram and tri-gram hyper/hypo-nyms (noun phrases)
+from the input corpus[1]. The normalized texts just only nouns and noun phrased retained in the
+sentences. Rest all POS tags like verbs, adjectives, adverbs, determiners and other closed class words
+and punctuation marks are removed from the input sentence. (table 1 shows an example for this
+normalization)
+- Hearst Patterns: [2] I extracted the patterns proposed in this paper (shown in below) from the input
+Corpus[1] and created a list of hypernym : hyponym(s).
+        a. NP such as NP[, NP, NP.. and|or NP] : <Hypernym> such as <Hyponym List>
+        b. such NP as NP[, NP, NP.. and|or NP] : such <Hypernym> as <Hyponym List>
+        c. NP[, NP, NP,...NP] or other NP          : <Hyponym List> or other <Hypernym>
+        d. NP[, NP, NP,...NP] and other NP         : <Hyponym List> and other <Hypernym>
+        e. NP including NP[, NP,...,and|or NP] : <Hypernym> including <Hyponym List>
+        f. NP especially NP[, NP,...,and|or NP] : <Hypernym> especially <Hyponym List>
+Table one shows one example of extraction of Hearst Patterns.
+B. Creating the co-occurance maps and generating the results: (Arshia)
+----------------------------------------------------------------------
+- A co-occurance map is created for all the input words. This map stores the input word, the words with
+appear in the context of the input word (paragraph level) and their frequencies.
+The below is an example of co-occurance map:
+dirham : ... the_muslim 5 , yellow         2 , this_paper 4 , u.s._dollar 1 , adequate_food        1,
+the_forty-eighth 1 , not_arabic 1 , lord          9 , a_dirham 21 , river_into_ape       3 , divan      3,
+the_time 3 , worth_of_meat          3 , the_onhym 1 , other_object 1 1 , ten_dirham 10 ,
+tory_because_he 1 , object        1 , tendency_of_depe 1 , mouth           5 , way_of_explanation 1 , letter
+9 , drought 5 , risk_in_morocco 1 , thy_death 1 , power_generation 1 , camp                     2 , rabat
+7 , the_maktoum 1 , formation 2 , advisory 1 , cooking 4 , urplus_of_money 1 , canyon                     1,
+khaimah 1 , the_market 10 , the_termination 1 , exclusive_skyview_bar                 1 , different_tint 2 ,
+grazing 1 , any_paper 1 , union           5 , parliament_hlima 1 , including_gulf         1 , fry 2 ,
+an_installment      1 ....
+The words with appear more than 5 times in this map are listed as co-occurance hypernyms for
+dirham. They are listed in descending order.
+dirham :morocco thou day price abu government king country money bank o
+market exchange       dollar hand dinar gold thee city rate moroccan               thy oil case
+month hop coin world court …..
+The same process is followed for Hearst Patterns (6 patterns shown in Table1)
+For more details please refer Stage1_Babbage Folder. [Install script should be run to extract the
+Stage1 Submission]
+
+
+                                        STAGE 2
+--------------------------------------------------------------------------------------------------
+==================================================================================================
+--------------------------------------------------------------------------------------------------
+Fore the stage 2, we have deiced to represent our huge input corpus (UMBC WebBse) as Vector Space
+Model. We built several models for this data this corpus using Word2Vec tool with combinations of
+Skip-Gram modeling or Bag-of-Words modeling. In order to achieve this we have created new
+normalized files and have normalized the Hearst patterns as well. We created vectors with old
+normalised data as well to copare which normalized data is procing better results.
+Step 1: Pre-processing the Input Corpus
+The input corpus is per-processed with three different requirements: (the source code to get these
+normalizations and run instructions are located in the tools folder)
+*******************************************************************************************************
+                                              TABLE 1
+-------------------------------------------------------------------------------------------------------
+                                     A: Normalized Text (Norm)
+-------------------------------------------------------------------------------------------------------
+The entire input corpus is parsed through two filters:
+1. Determines all the bi-gram and tri-gram noun phrases in every sentence along with their positions
+within sentences. Inserts these phrases their original positions with an under-sore in the input
+sentence.
+2. Then it is refined by removing punctuation marks and words with POS tags other than noun, verb,
+adjective and adverb.
+Input text:
+-----------
+World_NNP War_NNP II_NNP aboard_IN a_DT destroyer_NN escort_NN ._. After_IN the_DT
+war_NN he_PRP entered_VBD the_DT steel_NN industry_NN and_CC joined_VBD the_DT
+family_NN owned_VBD Morgan_NNP Construction_NNP Co._NNP ,_, which_WDT creates_VBZ
+the_DT ``_`` machines_NNS behind_IN the_DT machines_NNS ''_'' --_: designing_VBG
+continuous_JJ rolling_VBG mills_NNS for_IN worldwide_JJ use_NN ,_, oil-film_JJ bearings_NNS
+under_IN the_DT name_NN Morgoil_NNP ,_, and_CC universal_JJ joints_NNS and_CC drive_NN
+spindles_NNS for_IN worldwide_JJ oil-field_NN and_CC rolling-mill_NN applications_NNS ._.
+
+(a) Stage1 Normalized Text:
+----------------------------
+world war ii destroyer escort war steel industry family morgan construction co. machines machines
+mills use bearings name morgoil joints drive spindles oil-field rolling-mill applications the_name
+a_destroyer worldwide_oil-field drive_spindles morgan_construction_co. world_war the_war
+rolling_mills world_war_ii oil-film_bearings the_steel universal_joints morgan_construction
+the_family oil-field_and_rolling-mill the_ma chines rolling-mill_applications worldwide_use
+joints_and_drive
+(b) New Normalized Text for Stage 2:
+--------------------------------------
+world war world_war ii destroyer escort destroyer_escort war entered steel industry steel_industry
+joined family owned morgan construction morgan_construction co. machin machin designing
+continuous rolling mill worldwide use oil-film bear name morgoil name_morgoil universal joint drive
+spindl drive_spindl worldwide oil-field rolling-mill applic rolling-mill_applic
+
+============================================================================================================
+                                        B: Hearst Patterns (HP)
+============================================================================================================
+The following patterns are extracted from the input corpus:
+a. NP such as NP[, NP, NP.. and|or NP] : <Hypernym> such as <Hyponym List>
+b. such NP as NP[, NP, NP.. and|or NP] : such <Hypernym> as <Hyponym List>
+c. NP[, NP, NP,...NP] or other NP        : <Hyponym List> or other <Hypernym>
+d. NP[, NP, NP,...NP] and other NP      : <Hyponym List> and other <Hypernym>
+e. NP including NP[, NP,...,and|or NP] : <Hypernym> including <Hyponym List>
+f. NP especially NP[, NP,...,and|or NP] : <Hypernym> especially <Hyponym List>
+
+Then the patterns are normalized so that they could be used to build a word vector.
+The following is an example for below pattern:
+NP such as NP[, NP, NP.. and|or NP] : <Hypernym> such as <Hyponym List>
+Input Untagged Text:
+parents , grandparents , stepparents , sister , brother , child , spouse , domestic partner or other
+member
+
+(a) <hypernym> : <list of hyponyms> (Stage1 Hearst Pattern)
+-----------------------------------------------------------
+member : parents , grandparents , stepparents , sister , brother , child , spouse , domestic partner
+
+(b) Normalized Pattern for Stage2: (so that spouse also gets scored as a neighboring term for member
+even when the window size is small -say 5- spouse/domestic)
+-----------------------------------------------------------------------------------------------------------------
+member parents member grandparents member stepparents member sister member brother member
+child member spouse member domestic_partner partner member
+
+=================================================================================================================
+                                  C: Hearst Patterns : IS (A|AN|THE)
+This pattern is a new pattern added to the Hearst Patterns:
+NP is (a|an|the) NP : <Hyponym> is (a|an|the) <Hypernym>
+We applied this pattern to the whole UMBC Corpus:
+The original text with the pattern match (untagged)
+Divya Jyoti is a certified Yoga therapist trained in Brazil and in India .
+Divya Jyoti is a researcher assistant at the Psychology Laboratory in Harvard University ,
+conducting clinical research in eating disorders and self-injurious behaviors .
+……..
+
+The is (a|an|the) patterns extracted:
+<Input Word> : <Posiible Hypernym> OR <Hyponym> : <Hypernym>
+divya_jyoti : certified_yoga_therapist
+divya_jyoti : researcher_assistant
+divya_dham : temple
+divya_dham : temple\/ashram
+divya_dham : true_modern_miracle
+divya_disha : ngo
+divya_p._vohra : industrial_engineering_supervisor
+
+If the input word is “divya_jyoti” then the candidate hypernyms predicted would be:
+therapist    researcher_assistant temple       modern_miracle ngo          engineering_supervisor
+
+-------------------------------------------------------------------------------------------------------------------------
+				TABLE 1 - ENDS
+************************************************************************************************************************
+#########################################################################################################################
+The following is the stages of various experiments we conducted :
+########################################################################################################################
+STEP I: Identifying the best pair to seed the word-analogy module to fetch
+possible hypernyms from a word embedding vector.
+########################################################################################################################
+________________________________________________________________________________________________________________________
+WORD-ANALOGY: Word analogy is the task of calculating the relationship between words in a given
+pair and inducing the same relationship into another new pair with one known and one unknown word.
+For example, let (cat, feline) be the given pair, (dog, X) be the new unknown pair. When word analogy
+is applied to these pairs as cat is to feline is as dog is to X (cat : feline :: dog : X), the result for X
+should be canine. The same analogy is applied to the input terms to fetch the candidate hypernyms
+using word embedding.
+The most_similar[4][5] function is used to extract this result:
+                              A : B :: C(Input-word) : D(results)
+D (set of 100 hypernyms for C) =most_similar(positive=[C, B], negative=[A], topn=100)
+   ➔ D is later refined to fetch top 15.
+I experimented with various word analogy pairs over one word2vec model over normalized text of
+stage 1(skip-gram with 300 dimensions, window size = 10 and min count = 5). One pair was chosen as
+meronym-holonym pair and the other are hyponym-hypernym pairs from different domains. The best
+result was for the pair (cat, animal) when applied over the training data. So this pair was used for all
+other experiments. (from stage2-report)
+**************************************************************************************************************************
+                                     TABLE 2 : TRAINING DATA
+----------------------------------------------------------------------------------------------------------------------------
+   (india, countries) – similarity   (cat, feline) – similarity score =   (nose, face) – similarity score =
+      score = 0.433995682031                  0.73864040737                       0.614863266018
+---------------------------------------------------------------------------------------------------------------------------
+ MRR: 0.00702356902357               MRR: 0.0101386483886                 MRR: 0.0102745865246
+ MAP: 0.00679707329707               MAP: 0.0100025372775                 MAP: 0.0102023643024
+ R-P: 0.00657057757058               R-P: 0.00986642616643                R-P: 0.0101301420801
+ P@1: 0.00333333333333               P@1: 0.006                           P@1: 0.006
+ P@5: 0.0024                        P@5: 0.00306666666667            P@5: 0.00333333333333
+ P@15: 0.00133333333333             P@15: 0.00186666666667           P@15: 0.00151111111111
+==========================================================================================================================
+  (dirham, currency) – similarity    (cat, animal) – similarity       (gold, metal) – similarity score =
+     score = 0.523077260849          score = 0.580062987585                   0.495169245696
+---------------------------------------------------------------------------------------------------------------------------
+ MRR: 0.00743518518519              MRR: 0.0128273911274             MRR: 0.00578038258038
+ MAP: 0.00729814814815              MAP: 0.0128538461538             MAP: 0.00550525030525
+ R-P: 0.00719074074074              R-P: 0.0128803011803             R-P: 0.00539943019943
+ P@1: 0.00333333333333              P@1: 0.00733333333333            P@1: 0.00266666666667
+ P@5: 0.0032                        P@5: 0.004                       P@5: 0.00186666666667
+ P@15: 0.00146666666667             P@15: 0.00204444444444           P@15: 0.00111111111111
+---------------------------------------------------------------------------------------------------------------------------
+					Table 2 ENDS
+***************************************************************************************************************************
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////RESULT: Word-analogy with cat-animal is used for rest of the experiments////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+############################################################################################################################
+STEP 2: Identifying the word – embedding model built with the help of
+word2Vec tool
+############################################################################################################################
+----------------------------------------------------------------------------------------------------------------------------
+To create a word embedding matrix we considered the following variations of the input sentences:
+(replicating examples from table 1)
+                                            1. DATA:
+----------------------------------------------------------------------------------------------------------------------------
+A.     Plain UMBC untagged corpus:
+-----------------------------------
+example:
+World War II aboard a destroyer escort . After the war he entered the steel industry and joined the
+family owned Morgan Construction Co. , which creates the "machines behind the machines" --
+designing continuous rolling mills for worldwide use , oil-film bearings under the name Morgoil , and
+universal joints and drive spindles for worldwide oil-field and rolling-mill applications .
+
+B.      Normalised UMBC Corpus (Stage1) Normalized1
+-----------------------------------------------------
+example:
+world war ii destroyer escort war steel industry family morgan construction co. machines machines
+mills use bearings name morgoil joints drive spindles oil-field rolling-mill applications the_name
+a_destroyer worldwide_oil-field drive_spindles morgan_construction_co. world_war the_war
+rolling_mills world_war_ii oil-film_bearings the_steel universal_joints morgan_construction
+the_family oil-field_and_rolling-mill the_ma chines rolling-mill_applications worldwide_use
+joints_and_drive
+
+C.      Normalised UMBC Corpus (Stage2) Normalized2
+-----------------------------------------------------
+For stage 1, the data was not stemmed. So I applied stemming again to the input corpus (but for plural
+form of nouns only) and recreated the normalized text. This time the normalized text also retained
+adverbs, adjectives and verbs apart from nouns and noun phrases.
+example:
+world war world_war ii destroyer escort destroyer_escort war entered steel industry steel_industry
+joined family owned morgan construction morgan_construction co. machin machin designing
+continuous rolling mill worldwide use oil-film bear name morgoil name_morgoil universal joint drive
+spindl drive_spindl worldwide oil-field rolling-mill applic rolling-mill_applic
+
+D. Normalised Hearst Patterns (stage2) NormalizedHP
+----------------------------------------------------
+Since Hearst patterns also hold some information about the IS-A relationship between concepts. I
+though to include them as well in the word embedding. So I have normalized the Hearts Patterns and
+normalization is represented as :
+hypernym : hyponym1, hyponym2 → hypernym hyponym1 hypernym hyponym2 hypernym
+example:
+member : parents , grandparents , stepparents , sister , brother , child , spouse , domestic partner
+                                            →
+member parents member grandparents member stepparents member sister member brother member
+child member spouse member domestic_partner partner member
+E.     Google news vectors:
+Google News corpus + word embedding model (Vocab size = 3 million words; Dimentions = 300;
+       model: skip-gram;    minimum frequency: 5;     window size = 10 ).
+
+-------------------------------------------------------------------------------------------------------------
+                             2. original VS Stemming
+--------------------------------------------------------------------------------------------------------------
+So far all the tests were done against original words from inth input corpus. What if the word predicted
+by one the models in “persons” and the candiadate hypernym file has “person”. So we need a way to
+stem either the candidate vocabulary or predicted output or both. I have conducted few experiments by
+applying stemming to – candidate hypernym vocabulary, AH = { predicted hypernyms} (output from
+word analogy cat:animal::hyponym:<?> applied to finalized word embedding) in some combinations to
+see which combination produces better results. The below experiment combinations is the comiantions
+from the following major decisions:
+I.     V = {candidate vocabulary}            VS           New V ={ V + stemmed(V) }
+II. AH = {predicted output hypernyms} VS               New AH = { AH OR stemmed(AH) OR
+                                                       Backoff(AH) OR stemmed(Backoff(AH) }
+Once a result set AH is predicted by our model, we the decision II. Then refine the results by
+eliminating candidates which do not exist in I (either V or New V).
+Experiment
+Combinations:                  I.                    +                            II.
+        a.       I. V = {candidate vocabulary}       +      II.     AH = {predicted output hypernyms }
+        b.       I. New V ={ V + stemmed(V) }        +      II.     New AH = { AH OR stemmed(AH)
+                                                          OR Backoff(AH) OR stemmed(Backoff(AH) }
+        c.       I. New V ={ V + stemmed(V) }        +      II.     AH = {predicted output hypernyms }
+        d.       I. V = {candidate vocabulary}       +      II.     New AH = { AH OR stemmed(AH)
+                                                         OR Backoff(AH) OR stemmed(Backoff(AH) }
+
+Word Analogy is applied on a word embedding created with the following combination:
+Data : New Normalized Data (stage2 from table1) + Normalized Hearst Pattern (stage2 from table1)
+Model : Skip-Gram Model
+Window size + minim frequency : 10 + 5
+Seed : cat-animal
+Sample Data : Training Data (1500 sample)
+[ More about the bed word2vec model in next step 3. word2vec Configurations ]
+*********************************************************************************************************************
+                                              TABLE 3
+---------------------------------------------------------------------------------------------------------------------
+                    Combination a.                                   Combination b.
+---------------------------------------------------------------------------------------------------------------------
+MRR: 0.023385986236                              MRR: 0.0220841510342
+MAP: 0.0224854571355                             MAP: 0.0214873015873
+R-P: 0.0214505365005                             R-P: 0.0207495430495
+P@1: 0.0146666666667                             P@1: 0.0133333333333
+P@5: 0.00786666666667                            P@5: 0.00733333333333
+P@15: 0.00373333333333                           P@15: 0.00386666666667
+=======================================================================================================================
+                Combination c.                                  Combination d.
+-----------------------------------------------------------------------------------------------------------------------
+MRR: 0.0212438986939                             MRR: 0.024830983831
+MAP: 0.0202585331335                             MAP: 0.0243206737707
+R-P: 0.0191441632442                             R-P: 0.0236667129167
+P@1: 0.0126666666667                             P@1: 0.0153333333333
+P@5: 0.0072                                      P@5: 0.008
+P@15: 0.00368888888889                           P@15: 0.00422222222222
+-----------------------------------------------------------------------------------------------------------------------
+			Table 3 ends
+***********************************************************************************************************************
+From the results Combination d > a > b > c [with respect to MRR and MAP]
+========================================================================
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////RESULT:													/////////
+////The best model was d. with original candidate vocabulary and stemmed output					/////////
+////hypernyms with a back-off lookup against this original candidate vocabulary.				/////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+We always take to 15 results from the analogy result. [ we evaluated results with top 3,				|
+5, 10, 15 : but top 15 has better MRR results ]										|
+________________________________________________________________________________________________________________________|
+
+                    3. word2vec Configurations
+-------------------------------------------------------------------------------------------------------------------------
+A. MODEL: Skip-gram                               VS              CBOW
+B. Input Data 1. Data :
+-      1. A plaint untagged text (VS)
+-      1. B normalized texts stage 1 – Normalized1 (VS)
+-      1. C normalized texts stage 2 - Normalized2 (VS)
+-      1. D Normalises Hearst Patterns - NormalizedHP (VS)
+-      1. E Google News Vectors
+-      1. F : C + D – Normaliation2 + NormalizationHP
+C. Window Size + Minimum Frequency : 10 + 5 (VS) 20 + 10
+The following are the results of few combinations of A. B. and C.
+
+***************************************************************************************************************************
+                                           TABLE 4
+---------------------------------------------------------------------------------------------------------------------------
+                Combination 1:                                   Combination 2:
+---------------------------------------------------------------------------------------------------------------------------
+A. Skip-gram                                     A. Skip-gram
+B. 1.D NormalizedHP                              B. 1. B normalized texts stage 1 – Normalized1
+C. Window Size : 20 + 10                     C. Window Size : 10 + 5
+Vocab size : 118631                          Vocab Size : 1448927
+---------------------------------------------------------------------------------------------------------------------------
+MRR: 0.0102893846894                         MRR: 0.0234560920561
+MAP: 0.0101848500265                         MAP: 0.0226945147445
+R-P: 0.0101037721538                         R-P: 0.0219329374329
+P@1: 0.00466666666667                        P@1: 0.0126666666667
+P@5: 0.00373333333333                        P@5: 0.0076
+P@15: 0.00231111111111                       P@15: 0.00368888888889
+==========================================================================================================================
+                Combination 3:                               Combination 4:
+A. CBOW                                      A. Skip-gram
+B. 1.F : C+D:Normaliation2+NormalizationHP   B. 1.F : C+D:Normaliation2+NormalizationHP
+C. Window Size : 20 + 10                     C. Window Size : 20 + 10
+Vocab size : 972144                          Vocab Size=972144
+--------------------------------------------------------------------------------------------------------------------------
+MRR: 0.0249653032153                         MRR: 0.030199013949
+MAP: 0.024086987087                          MAP: 0.0292090349465
+R-P: 0.0234647556148                         R-P: 0.0284017519518
+P@1: 0.0113333333333                         P@1: 0.0166666666667
+P@5: 0.0092                                  P@5: 0.0102666666667
+P@15: 0.0048                                 P@15: 0.00502222222222
+------------------------------------------------------------------------------------------------------------------------------
+			Table $ ends
+*********************************************************************************************************************
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RESULT:
+The best model was UMBCNewNormNoStopHearst_SG_20_10 with below
+configurations (Combination 4)
+       -      Skip-gram Model
+       -      Data: Normalization2 + Normalized Hearst Patterns
+       -      window size + minimum frequency : 20 + 10
+       nd
+The 2 best model was UMBCNewNormNoStopHearst_CBOW_20_10 with below
+configurations
+(Combination 3)
+       -      CBOW Model
+       -      Data: Normalization2 + Normalized Hearst Patterns
+       -      window size + minimum frequency : 20 + 10
+Initially I went ahead and worked with Combination 4 for the next module, but the
+results degraded. So I considered Combination 3 which could retain the current
+result. So I tooke both these models for next stage.
+These two models are used from here with the other experiments.
+Names of the files:
+1. UMBCNewNormNoStopHearst_CBOW_20_10* (3 files) - Combination 3
+2. UMBCNewNormNoStopHearst_SG_20_10* (3 files) - Combination 4
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+############################################################################################################################
+STEP 3: Eliminating the cat-animal dependency – Calculating PHI
+                       Stage2 : PHIModule (MODEL2)
+#############################################################################################################################
+Reference : Learning Semantic Hierarchies via Word Embeddings[3]
+In all the above experiments and evaluations we used the word-analogy over word embeddings with
+seed cat-animal. (word2Vec Python Module Efficient Estimation of Word Representations in Vector
+Space [4]). But if the training target hyponym sample is changed, cat-animal pair did not work well.
+For example, for the trial data , india-countries pair worked better than cat-animal.
+******************************************************************************************************************************
+                                             TABLE 5
+------------------------------------------------------------------------------------------------------------------------------
+                                          TRIAL DATA
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                 Word analogy Pair : CAT-ANIMAL
+------------------------------------------------------------------------------------------------------------------------------
+Step 2:3.word2Vec Configuration Combination 3 Step 2:3.word2Vec Configuration Combination 4
+A. CBOW                                             A. Ship-gram
+B. 1.F : C+D:Normaliation2+NormalizationHP          B. 1.F : C+D:Normaliation2+NormalizationHP
+C. Window Size : 20 + 10                            C. Window Size : 20 + 10
+Vocab size : 972144                                 Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.01                                           MRR: 0.0416666666667
+MAP: 0.01                                           MAP: 0.0433333333333
+R-P: 0.01                                           R-P: 0.045
+P@1: 0.0                                            P@1: 0.02
+P@5: 0.004                                          P@5: 0.02
+P@15: 0.00133333333333                              P@15: 0.00666666666667
+=============================================================================================================================
+                              Word analogy Pair : INDIA-COUNTRIES
+------------------------------------------------------------------------------------------------------------------------------
+Step 2:3.word2Vec Configuration Combination 3 Step 2:3.word2Vec Configuration Combination 4
+A. CBOW                                             A. Ship-gram
+B. 1.F : C+D:Normaliation2+NormalizationHP          B. 1.F : C+D:Normaliation2+NormalizationHP
+C. Window Size : 20 + 10                            C. Window Size : 20 + 10
+Vocab size : 972144                                 Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.02                                           MRR: 0.00222222222222
+MAP: 0.02                                           MAP: 0.00222222222222
+R-P: 0.02                                           R-P: 0.00222222222222
+P@1: 0.0                                            P@1: 0.0
+P@5: 0.008                                          P@5: 0.0
+P@15: 0.00266666666667                              P@15: 0.00133333333333
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                       TRAINING DATA
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                 Word analogy Pair : CAT-ANIMAL
+------------------------------------------------------------------------------------------------------------------------------
+Step 2:3.word2Vec Configuration Combination 3 Step 2:3.word2Vec Configuration Combination 4
+A. CBOW                                             A. Ship-gram
+B. 1.F : C+D:Normaliation2+NormalizationHP          B. 1.F : C+D:Normaliation2+NormalizationHP
+C. Window Size : 20 + 10                            C. Window Size : 20 + 10
+Vocab size : 972144                                 Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.0249653032153                                MRR: 0.030199013949
+MAP: 0.024086987087                                 MAP: 0.0292090349465
+R-P: 0.0234647556148                                R-P: 0.0284017519518
+P@1: 0.0113333333333                                P@1: 0.0166666666667
+P@5: 0.0092                                         P@5: 0.0102666666667
+P@15: 0.0048                                                  P@15: 0.00502222222222
+==============================================================================================================================
+                                    Word analogy Pair : INDIA-COUNTRIES
+------------------------------------------------------------------------------------------------------------------------------
+Step 2:3.word2Vec Configuration Combination 3 Step 2:3.word2Vec Configuration Combination 4
+A. CBOW                                                       A. Ship-gram
+B. 1.F : C+D:Normaliation2+NormalizationHP                    B. 1.F : C+D:Normaliation2+NormalizationHP
+C. Window Size : 20 + 10                                      C. Window Size : 20 + 10
+Vocab size : 972144                                           Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.0251667869168                                          MRR: 0.0208171143671
+MAP: 0.0251518398268                                          MAP: 0.0204255078255
+R-P: 0.0250866281866                                          R-P: 0.0200827228327
+P@1: 0.0126666666667                                          P@1: 0.01
+P@5: 0.0088                                                   P@5: 0.00733333333333
+P@15: 0.00493333333333                                        P@15: 0.00382222222222
+-----------------------------------------------------------------------------------------------------------------------------
+There is one more reason apart from (PHIModule results) to choose CBOW model against Skip-gram:
+The results of skip-gram model are inconsistent across trial - training data and seed pairs CAT-
+ANIMAL – INDIA COUNTRIES. Where as the CBOW model produced consistent results in these
+scenarios.
+- In order to avoid this confusion between the seed pairs, we referred the paper Learning Semantic
+Hierarchies via Word Embeddings[3] to find a way by achieving the same results without the
+dependency of seed-vise word-analogy. Before I implemented the strategy mentioned in this paper
+Arshia worked on en existing project.
+--------------------------------------------------------------------------------------------------------------------------
+SIDE:
+     • Arshia took an existing project based on this project (tested on Russian language), modified the
+         code and applied it to our task with the CBOW-Word embeddings (word embeddings – data:
+         Normalized2 data; Model : CBOW; Dimension: 300, window size: 20, minimum frequency:
+         10). The results are good. So this supported our idea to implement the PHIModule.
+     • We could not use this project to actually get the possible hypernyms for the entire training data
+         or trial data. It has a very low recall value as it choose only 200+ hyponyms as test set from
+         1500 training data.
+---------------------------------------------------------------------------------------------------------------------------
+			Table 5 ENDS
+***************************************************************************************************************************
+PHI module:
+------------
+////////////////////////////////////////////////////////////////////////////////
+////     PHI* (or PHI) = arg-min[phi: 1→N] ((1/N) ∑|| phi*X – Y ||2) [F1] /////
+////////////////////////////////////////////////////////////////////////////////
+N – pairs of (hyponym, hypernym) from the training data. Each phi value is computed as phi =
+vector(Y)/Vector(X). Where X is the hyponym and Y is the hypernym from the pairs. Total pairs used
+for computation : 6768 pairs – formed from 1500 input hyponym terms and their respective gold data
+hypernyms. Steps of the algorithm:
+1. Fetch the pairs from 1A.english.training.data.txt and 1A.english.training.gold.txt (training data is
+used to determine PHI value)
+2. Load the word embedding (UMBCNewNormNoStopHearst_CBOW_20_10 or
+UMBCNewNormNoStopHearst_SG_20_10 from Step 2) and fetch the vector representations of the
+(hyponym, hypernym) pairs.
+3. Calculate phi for all the pairs – phi = vector(Y)/Vector(X).
+4. Use these phi values in the above formula[F1] : for each phi compute (1/N)∑|| phi*X – Y ||2 and store
+in a list.
+5. Find the phi value for which the above computed value (in 4) is minimum. This would be the PHI*
+(or simply PHI).
+6. Use this PHI value in the most_similar function of word2Vec[4] to determine the possible
+hypernyms with the input hyponym term (either raining data or trial data or test data). This is
+determined by the following two function calls:
+X = input term (hyponym)
+(stored in phi01.txt)<hypernym list 1> =
+most_similar(positive=[X, PHI*X], negative=[], 10)
+(stored in phi02.txt)<hypernym list 2> =
+most_similar(positive=[X], negative=[PHI*X], 10)
+7. Then <hypernym list 1> and <hypernym list 2> are merged together : hypernyms appearing in both
+the lists are given higher ranking and are listed first.
+
+                          PHI * Input_Word                    PHI * Input_Word
+         <Hypernym_List><------------------------ Input_Word ----------------------><Hypernym_List>
+< ------------------------------------------------Vector Space--------------------------------------------------->
+
+
+*******************************************************************************************************************
+                                      TABLE 6
+------------------------------------------------------------------------------------------------------------------------------
+                   Step 2: 3.word2Vec Configuration Combination 3
+                                 A. CBOW
+                    B. 1.F : C+D:Normaliation2+NormalizationHP
+                               C. Window Size : 20 + 10
+                                  Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+                        phi01.txt                                                   phi02.txt
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.0255195841196                                        MRR: 0.0254063566064
+MAP: 0.0244134152884                                        MAP: 0.0246934852185
+R-P: 0.0233548655049                                        R-P: 0.0239806138306
+P@1: 0.0113333333333                                        P@1: 0.0126666666667
+P@5: 0.00973333333333                                       P@5: 0.00946666666667
+P@15: 0.0048                                                P@15: 0.00462222222222
+========================================================================================================================
+                              Step 2: 3.word2Vec Configuration Combination 4
+                                             A. Ship-gram
+                                  B. 1.F : C+D:Normaliation2+NormalizationHP
+                                            C. Window Size : 20 + 10
+                                                Vocab size : 972144
+------------------------------------------------------------------------------------------------------------------------------
+                        phi01.txt                                                   phi02.txt
+------------------------------------------------------------------------------------------------------------------------------
+MRR: 0.00222222222222                                       MRR: 0.0003
+MAP: 0.00222222222222                                       MAP: 0.0003
+R-P: 0.00222222222222                                       R-P: 0.0003
+P@1: 0.00133333333333                                 P@1: 0.0
+P@5: 0.0008                                           P@5: 0.000266666666667
+P@15: 0.000355555555556                               P@15: 8.88888888889e-05
+------------------------------------------------------------------------------------------------------------------------------
+			TABLE 6 ends
+*****************************************************************************************************************************
+/////////////////////////////////////////////////////////////////////////////////////////
+Result:
+From the above table UMBCNewNormNoStopHearst_CBOW_20_10 with below
+configurations (Combination 3) is considered as the final best word embedding for
+our task.
+      -     CBOW Model
+      -     Data: Normalization2 + Normalized Hearst Patterns
+      -     window size + minimum frequency : 20 + 10
+////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+###############################################################################################################################
+STEP 4: Including the left out Hearst Pattern :
+               <hyponym> is (a|an|the) <hypernym>
+###############################################################################################################################
+                 Stage2 : MODEL1
+---------------------------------------------------------------------------------------------------------------------------
+This approach was last attempt to improve the Mean Resiprocal Rank (MRR) score of our task.
+This Model has two major components:
+I. When I looked up for the candidate hypernyms for a bi-gram or tri-gram concept hyponyms from the
+training data, one of the candidate hypernym is PART-OF the hyponym itself. or example, Sociology
+department : department. Example2, Drug of Abuse : abuse. When this assumption is applied to the
+training data the MRR score is : 0.04
+
+II. The Hearst Patterns used so far do not have the basic pattern : IS-A. So I extracted the following
+apttern from the UMBC original tagged corpus.
+                           Noun-Phrase_1 is (a|an|the) Noun-Phrase_2
+These patterns reresent pairs (hyponym, hypernym) and is stores in a separate file from the other
+patterns as:
+       hyponym : hypernym                                  Total pairs = 2,633,421
+These new patterns are used alone to extract possible hypernyms from target word . The MRR score is
+0.08.
+I. PART-OF bi/tri-gram Concepts II. IS-A - NP1 is (a|an|the) NP0 Stage 2 MODEL1= I.+ II.
+MRR: 0.0406666666667                MRR: 0.0875873015873              MRR: 0.121287301587
+MAP: 0.0406666666667                MAP: 0.0856305555556              MAP: 0.118823941799
+R-P: 0.0406666666667                R-P: 0.0836523809524              R-P: 0.116054761905
+P@1: 0.0406666666667                P@1: 0.0573333333333              P@1: 0.0926666666667
+P@5: 0.00813333333333               P@5: 0.0298666666667              P@5: 0.0372
+P@15: 0.00271111111111              P@15: 0.0119111111111             P@15: 0.0143111111111
+
+By combining the results we get the Stage 2 - Model        1 ( I. + II) results.
+
+##########################################################################################################
+STEP 5: Merging the results of the above modules
+##########################################################################################################
+G. Arshia created a project to merge the results from two different files at a time.
+“mergeTwoResults.py”
+I have used this program to merge the following results with different combinations. This decides the
+final ranking of the hypernyms in the hypernym list.
+1. Stage 1 Results – Co-occurrence frequency with normalization results
+2. Stage 1 Results – Co-occurrence frequency with Hearst Patterns (6-patterns)
+3. Stage 2 Model 1 – Part-Of bi/tri-gram concept input hyponyms + hypernyms from IS-A pattern.
+4. Stage 2 PHI Module 01-<hypernym list 1> = most_similar(positive=[X, PHI*X], negative=[], 10)
+5. Stage 2 PHI Module 02-<hypernym list 2> = most_similar(positive=[X], negative=[PHI*X], 10)
+ We choose to merge the results from different modules to increase the recall rate is high. This
+module is MergeModule. The following were the combinations tested on both trial and test data:
+        i. MergeModule( Model1 Results + MergeModule(Stage1 results + PHI module
+(phi01+phi02)))
+        ii. MergeModule( Stage1 Results + MergeModule( Model1 results + PHI module
+(phi01+phi02)))
+        iii. MergeModule(MergeModule( Model1 results + PHI module(phi01+phi02)) + Stage1
+Results)
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+RESULT:
+The i. Results were the best for the training data. So we kept this as our final
+combination. This is our Babbage_System’s results.
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+References:
+[1] UMBC WebBase Corpus http://ebiquity.umbc.edu/blogger/2013/05/01/umbc-webbase-corpus-of-
+3b-english-words/
+[2] Automatic Acquisition of Hypernyms from Large Text Corpora
+http://www.aclweb.org/anthology/C92-2082.pdf
+[3] Learning Semantic Hierarchies via Word Embeddings
+https://www.aclweb.org/anthology/P/P14/P14-1113.xhtml
+[4] Efficient Estimation of Word Representations in Vector Space
+https://arxiv.org/pdf/1301.3781.pdf
+[5] word2vec Python module
+https://radimrehurek.com/gensim/about.html
+

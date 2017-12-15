@@ -1,0 +1,110 @@
+# ***************************************************************************************************************
+# ==============Patterns for our system======================================
+  LOOK IN Main_ReadMe.txt FROM IN THE MAIN FOLDER UMDuluth-CS8761-Babbage (PART 1. SECTION A)
+# ***************************************************************************************************************
+
+#=======================================================================================
+# This system runs in 3 WAYS based on what input data is being used to get the result
+#=======================================================================================
+# ---------METHOD 1---------------------------
+# DESCRIPTION: The basic idea of this process is to read the entire input corpus (tagged text)
+# ------------ Normalise it, extract HEARST patterns. [The main difference]
+# Then the dictionaries (based on HEARST PATTERNS and co-occurance) for the terms in the 
+# trail/training data are built. Later it fetches all the possible matching hypernym terms 
+# from the vocabulary of hypernym terms and builds an Output file. 
+# The Output file is checked against gold data and is scored.
+
+# INPUT CORPUS : [https://drive.google.com/file/d/0Bz40_IukD5qDUGVhMURFWE9aYVU/view]
+# --------------
+
+# Parameters to set specific for this RUN:
+#---------------------------------
+# RUN_FROM_START=true 				[Should be set to true to execute in METHOD 1- else METHOD 2 or METHOD 3 would be executes]
+# RUN_ON_SAMPLE=false 				[Set this to 'true' in case of just TEST run - NOT FOR RESULTS]
+# INPUT_SAMPLE_CORPUS="UMBC_Sample_Corpus/" 	[THIS IS PURELY FOR TESTING, NOT FORESULTS]
+# ***********IMPORTANT TO UPDATE****START************
+# INPUT_FULL_COPUS="/home/csgrads/valla045/NLP/UMBC_webbase_all/" 
+[ Set the path to the UMBC_webbase_all database from (https://drive.google.com/file/d/0Bz40_IukD5qDUGVhMURFWE9aYVU/view)]
+# ***********IMPORTANT TO UPDATE****END************
+# OUTPUT_DATA_PATH_H="temp/DataH/" 		[Output Path - where the HEARTS ALGORITHM PATTERNS are stored]
+# OUTPUT_DATA_PATH_N="temp/DataN/"		[Output Path - where the NORMALISED PATTERNS are stored]
+# OUTPUT_DATA_PATH_STORE_N="temp/store/DataN/"	[IF RUN_FROM_START is set to 'false' then set this path to a pre-processed Normalised Input Corpus]
+# OUTPUT_DATA_PATH_STORE_H="temp/store/DataH/"	[IF RUN_FROM_START is set to 'false' then set this path to a pre-processed Hearst Patterns]
+# PATH_FOR_VOCABULARY_OUTPUT="SemEval18-Task9/vocabulary/1A.english.vocabulary_1.txt"
+# [This path is used to fetch POS tag patterns of the Bi-grams and Tri-Grams of vocabulary file]
+#==================================================================================================================================
+# ---------METHOD 2---------------------------
+# DESCRIPTION: The basic idea of this process is to read the Normalised Corpus and HEARST patters
+# ------------ instead of the entire input corpus (tagged text). [The main difference]
+# Then the dictionaries (based on HEARST PATTERNS and co-occurance) for the terms in the 
+# trail/training data are built. Later it fetches all the possible matching hypernym terms 
+# from the vocabulary of hypernym terms and builds an Output file. 
+# The Output file is checked against gold data and is scored.
+
+# INPUT CORPUS : [https://drive.google.com/a/d.umn.edu/file/d/0B9xD1bj5DY-GUG1raDJzelNvRU0/view?usp=sharing]
+#---------------
+
+# Parameters to set specific for this RUN:
+#---------------------------------
+# RUN_FROM_START=false 					[Should be set to false to execute in METHOD 2 or METHOD 3]
+# RUN_ON_SAMPLE=false 					[DOES NOT EFFECT THIS RUN]
+# INPUT_SAMPLE_CORPUS="UMBC_Sample_Corpus/" 		[DOES NOT EFFECT THIS RUN]
+# INPUT_FULL_COPUS="/home/csgrads/valla045/NLP/UMBC_webbase_all/" [DOES NOT EFFECT THIS RUN]
+# OUTPUT_DATA_PATH_H="temp/DataH/" 			[Output Path - where the HEARTS ALGORITHM PATTERNS are stored]
+# OUTPUT_DATA_PATH_N="temp/DataN/"			[Output Path - where the NORMALISED PATTERNS are stored]
+# ***********IMPORTANT TO UPDATE***START************ 
+# [https://drive.google.com/a/d.umn.edu/file/d/0B9xD1bj5DY-GUG1raDJzelNvRU0/view?usp=sharing] Parent folder of 'DataN' and 'DataH'
+# OUTPUT_DATA_PATH_STORE_N="temp/store/DataN/"		[Since RUN_FROM_START is set to 'false', this path is set to a pre-processed Normalised Input Corpus]
+# OUTPUT_DATA_PATH_STORE_H="temp/store/DataH/"		[Since RUN_FROM_START is set to 'false' this path is set to a pre-processed Hearst Patterns]
+# ***********IMPORTANT TO UPDATE****END************
+# -----For Normalised Patterns----------------
+# CREATE_DIC_FILE_NORM=true				[Should be set to true to execute in METHOD 2 and false to execute in METHOD 3]
+# CREATE_RES_FROM_DIC_FILE_NORM=false			[Should be set to false to execute in METHOD 2 or and true to execute in METHOD 3]
+# INPUT_MAP_DATA_NORM="SemEval18-Task9/vocabulary/1A.english.cooccur.map.txt"		
+[if CREATE_DIC_FILE_NORM= false & CREATE_RES_FROM_DIC_FILE_NORM=true, then set this path to a pre-generated map file]
+# -----For Hearts Patterns----------------
+# CREATE_DIC_FILE_HEARST=true				[Should be set to true to execute in METHOD 2 and false to execute in METHOD 3]
+# CREATE_RES_FROM_DIC_FILE_HEARST=false			[Should be set to false to execute in METHOD 2 or and true to execute in METHOD 3]
+# INPUT_MAP_DATA_HEARST="SemEval18-Task9/vocabulary/1A.english.cooccur.map.txt"		
+[if CREATE_DIC_FILE_NORM= falsr & CREATE_RES_FROM_DIC_FILE_NORM=true, then set this path to a pre-generated map file]
+#==================================================================================================================================
+# ---------METHOD 3---------------------------
+# DESCRIPTION: The basic idea of this process is to read the pre-build dictionary files
+# ------------ built from the Normalised Corpus and HEARST patters instaed of from the 
+# entire input corpus or even the Normalised corpus [The main difference]
+# THIS OPTION IS PROVIDED TO GET QUICK RESULTS
+# This does not work if the input terms (for which the hypernyms should be discovered)
+# is changed i.e. modified to anything else apart from trail data. [IMPORTTANT]
+# These dictionaries are used to fetch all the possible matching hypernym terms 
+# from the vocabulary of hypernym terms and builds an Output file. 
+# The Output file is checked against gold data and is scored
+
+# Parameters to set specific for this RUN:
+#---------------------------------
+# RUN_FROM_START=false 					[Should be set to false to execute in METHOD 2 or METHOD 3]
+# RUN_ON_SAMPLE=false 					[DOES NOT EFFECT THIS RUN]
+# INPUT_SAMPLE_CORPUS="UMBC_Sample_Corpus/" 		[DOES NOT EFFECT THIS RUN]
+# INPUT_FULL_COPUS="/home/csgrads/valla045/NLP/UMBC_webbase_all/" [DOES NOT EFFECT THIS RUN]
+# OUTPUT_DATA_PATH_H="temp/DataH/" 			[Output Path - where the HEARTS ALGORITHM PATTERNS are stored]
+# OUTPUT_DATA_PATH_N="temp/DataN/"			[Output Path - where the NORMALISED PATTERNS are stored]
+# OUTPUT_DATA_PATH_STORE_N="temp/store/DataN/"		[DOES NOT EFFECT THIS RUN]
+# OUTPUT_DATA_PATH_STORE_H="temp/store/DataH/"		[DOES NOT EFFECT THIS RUN]
+# -----For Normalised Patterns----------------
+# CREATE_DIC_FILE_NORM=false				[Should be set to true to execute in METHOD 2 and false to execute in METHOD 3]
+# CREATE_RES_FROM_DIC_FILE_NORM=true			[Should be set to false to execute in METHOD 2 or and true to execute in METHOD 3]
+# INPUT_MAP_DATA_NORM="SemEval18-Task9/vocabulary/1A.english.cooccur.map.txt"		[IMPORTANT - Stored in the same PATH by DEFAULT]
+# [if CREATE_DIC_FILE_NORM= false & CREATE_RES_FROM_DIC_FILE_NORM=true, then set this path to a pre-generated map file of Normalised patterns] 
+# -----For Hearts Patterns----------------
+# CREATE_DIC_FILE_HEARST=false				[Should be set to true to execute in METHOD 2 and false to execute in METHOD 3]
+# CREATE_RES_FROM_DIC_FILE_HEARST=true			[Should be set to false to execute in METHOD 2 or and true to execute in METHOD 3]
+# INPUT_MAP_DATA_HEARST="SemEval18-Task9/vocabulary/1A.english.cooccur.map.txt"		[IMPORTANT - Stored in the same PATH by DEFAULT]
+# [if CREATE_DIC_FILE_NORM= false & CREATE_RES_FROM_DIC_FILE_NORM=true, then set this path to a pre-generated map file of Hearts patterns]
+#====================================================================================
+# ------OTHER PARAMS--NOT SPECIFIC TO RUNS-----
+# VOCAB_TEXT_FILE="SemEval18-Task9/vocabulary/1A.english.vocabulary.under.txt"  [The modified Vocabulary file with _ instead of spaces]
+# INPUT_TERM_DATA_H="SemEval18-Task9/trial/data/1A.english.trial.data_H.txt" or "SemEval18-Task9/training/data/1A.english.training.data_H.txt" [The modified Input Term files with _ instead of spaces for HEARST Algorithm]
+# INPUT_TERM_DATA_N="SemEval18-Task9/trial/data/1A.english.trial.data_N.txt" or "SemEval18-Task9/training/data/1A.english.training.data_N.txt" [The modified Input Term files with _ instead of spaces for Cooccurance Algorithm]
+# OUTPUT_FILE_DATA_NORM="Output/1A.english.output.norm.txt"				
+[The Output set of candidate hypernyms created by this system. they are used as keys in scorrer program ]
+#=====================================================================================
+

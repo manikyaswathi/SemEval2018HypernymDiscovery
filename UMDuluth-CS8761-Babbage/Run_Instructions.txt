@@ -1,0 +1,17 @@
+AUTHOR: SWATHI
+
+PURPOSE: Key Results and easy Run instaructions
+
+1. Navigate to "UMDuluth-CS8761-Babbage/System_Babbage"
+2. Edit : runIt.sh as needed
+3. run runIt.sh as 
+----------------------------------------------------
+	sh runIt.sh 
+----------------------------------------------------
+(if this doesnt not run, give execute permissions to this file as "chnod 777 runIt.sh" and then run)
+4. The complete outputs and results could be seen in 
+UMDuluth-CS8761-Babbage/System_Babbage/Output/<FOLDER:$OUTPUT_DIR>/
+score file: Evaluation_Report.LOG
+5. The Main score from the report is from 9 - 11. This could be seen in the Report_<FOLDER:$OUTPUT_DIR>_timestamp file in UMDuluth-CS8761-Babbage/System_Babbage
+
+

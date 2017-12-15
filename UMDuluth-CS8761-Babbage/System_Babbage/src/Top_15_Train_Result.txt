@@ -1,0 +1,149 @@
+Top 15 resuts of various Modules as an example
+
+
+
+***************** Stage 2 Model1 Part of - bi/tri-gram concepts + Hearts Pattern IS-A ************************************
+
+
+
+storm	example	storm	reminder	focus	hurricane
+mechanism	panama	fumigation	slippery_slope
+problem	threat	concern	factor	challenge	component	source	way	contamination	hazard
+image	error	background	digital_image	magnification	dust_contamination
+gum
+song	example	resource	tribute	anthem	bit	hit	way	story	version
+wing	site	addition	aircraft	library	assistant_professor	surface	appendage	park	way
+hero	person	protagonist	guy	one	sort	boy	professor	mind	figure
+scheme	stage	plume	database
+award	example	metal	conductor	story	entrepreneur	honor	professor	fellow	good_example
+verbena
+woman	disregard	exception	fiorina	outrage
+******************** Stage 2 Model 2 - PHI-01  MODULE RESULTS TOP 15 ******************************************************
+mayfly	chironomid	simulium	ephemeroptera	killifish	cyprinus	diptera	piscivorous	mosquitofish	phalacrocorax	odonata	herbivorous	insectivorous	chub	lepomis	orthoptera
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	granulite	silicified	clastic	superterrane	downdip	podzol	lacustrine	eocene	fossiliferous	ammophila
+detestation	repugnance	malignity	indignation	detestable	odious	vehemence	lamentable	abhorred	licentiousness	revulsion	ingratitude	ignominy	perversity	impiety	atrocious
+wilma	landfall	hurricane	cyclone	storm	grimmer	atlantic_hurricane	northeastward	gust	torrential	biloxi	rainband	tropical	west-northwest	typhoon	nor'easter
+militarisation	militarized	militarism	expansionism	militaristic	destabilization	adventurism	destabilisation	state-building	globalist	neoliberalism	interventionism	intensifying	geostrategic	expansionist	separatism
+air_pollution	polluting	polluted	water_pollution	smog	airshed	polluter	environmental	air_quality	coal-burning	eutrophication	nonpoint	antipollution	smokestack	pollute	sprawl
+darkfield	micrograph	photomicrograph	retouch	stippling	sectioned	multicolor	visualized	textural	autofluorescence	stereoscope	autoradiograph	retouch	birefringent	antialias	thalweg
+
+lyric	singing	sing	songbook	rockabilly	bluesy	sang	melody	sung	anthemic	sing-along	tune	blues-rock	accompaniment	sitar	foot-tapping
+right_wing	flapping	flap	winged	wingspan	beak	fuselage	underside	rump	aloft	appendage	wingless	strut	fluttering	thorax	swoop
+unsung	heroic	larger-than-life	bravery	villain	heroism	warrior	legendary	plucky	portrayed	gladiator	battle-scarred	valiant	personification	macho	agamemnon
+cumulonimbus	cloud	stratocumulus	convective	updraft	stratiform	downdraft	anticyclonic	cyclonic	advect	squall	stratus	thunderstorm	convection	cloudiness	raindrop
+gold	platter	silver_star	pewter	silversmith	burnished	bronze	silver_bullet	silver_lake	plate	inlaid	silver-plated	pendant	roentgenium	medallion	sheathed
+
+
+********************* Stage 2 Model 2 - PHI-02 MODULE RESULTS TOP 15 *********************************************************
+mayfly	chironomid	simulium	ephemeroptera	diptera	killifish	cyprinus	phalacrocorax	mosquitofish	trematode	herbivorous	insectivorous	chub	sunfish	piscivorous	salvinia
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	eocene	superterrane	clastic	lacustrine	granulite	downdip	pliocene	fossiliferous	foraminiferal	entisol
+repugnance	abhorred	detestation	malignity	baseness	debasing	licentiousness	reproach	meanness	detestable	indignation	ingratitude	ignoble	odium	affront	pusillanimous
+wilma	hurricane	landfall	storm	cyclone	atlantic_hurricane	grimmer	torrential	biloxi	northeastward	typhoon	gust	rita	rainband	houma	nor'easter
+militarized	militarism	militarisation	destabilization	globalist	militaristic	counter	neoliberalism	state-building	isolationism	interventionism	repression	antiterrorist	expansionist	upsurge	reassert
+air_pollution	water_pollution	polluting	air_quality	environmental	polluter	pollutant	polluted	pollute	smog	pollution_prevention	waste	toxic	clean	toxic	effluent
+photomicrograph	micrograph	multicolor	darkfield	sectioned	stereoscope	sepia	retouch	birefringent	low-resolution	photomicrography	translucency	defocused	multi-color	stippling	metallography
+
+ditty	lyric	tune	ballad	lyricist	remix	lullaby	folksong	duet	album	remix	songbook	reggaeton	sing	lyrically	croon
+right_wing	flapping	outspread	aileron	feathering	fuselage	flying	feather	flight	airfoil	flap	talon	wingspan	gliding	tail	airplane
+heroic	unsung	villain	heroism	derring-do	plucky	heroine	demigod	coward	heroically	superhero	idolized	swashbuckling	bravery	gandalf	daring
+cumulonimbus	stratocumulus	cloud	stratiform	convective	stratus	cirrus	updraft	cloudiness	downdraft	extratropical	altocumulus	altostratus	cyclonic	convection	northwestward
+gold	silver_star	silver_bullet	silver_lake	lining	coinage	coin	greenback	silver_screen	doubloon	shekel	silver-plated	platter	hoard	plate	silver_bell
+
+
+************************************** Stage 1 : NORM + HEARST TOP 15***************************************************************
+blackfly	nelly	river	insect	control	pest_populations	problems	plant	population	hospital	tony	pest
+
+abhorrence	life	tate	men	world	the_opposition	government	war	way	person	case
+hurricane	precipitation	natural_disaster	tropical	tropical_storm	rain	wind	center	natural_disasters	extreme_weather_conditions	natural_hazards	extreme_weather_events	low_levels	florida	coast	weather_events
+negotiation	enforcement	colonialism	militarization	tate	war	government	right	issues	life-cycle_costs	numerous_critical_reforms	this_area	important_issues	world	u.s.	challenges
+pollution	problem	health	environment	waste	energy	air_pollution	use	development	management	research	world	regulation	data	population	the_environment
+format	electron_microscopy	photomicrograph	image	microscope	film	photomicrography	images	optical_microscopy	image_sources	investigations	topics	filter	figure	contrast	the_finish
+dome
+bird	performance	radio	men	culture	experience	poetry	jazz	everything	verse	computer	type	english	interest	composition	species
+wing	research	government	world	data	use	development	drawing	project	university	application	example	interest	report	children	factors
+
+cloud	model	cumulus_cloud	air	wind	low_clouds	several_sub-types	marine_boundary_layer_clouds	cumulonimbus	own_driver	convection	layer	weather	image	the_cloud	various_fields
+metal	use	coin	children	fish	iron	jewelry	everything	china	treasure	display	wealth	environment	career	investment	valuables
+verbena	desert	dune	plant	flower	heat-loving_flowers	matted_plants	the_beaches	ephemerals	colorful_annuals	primrose	winter	beach	abronia	lupine
+
+************************************ Stage 2 PHIModule - Phi01+Phi02 TOP 15 *********************************************************
+mayfly	chironomid	simulium	ephemeroptera	killifish	cyprinus	diptera	piscivorous	mosquitofish	phalacrocorax	herbivorous	insectivorous	chub	odonata	lepomis	salvinia
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	granulite	clastic	superterrane	downdip	lacustrine	eocene	fossiliferous	silicified	podzol	entisol
+detestation	repugnance	malignity	indignation	detestable	abhorred	licentiousness	ingratitude	odious	vehemence	lamentable	revulsion	ignominy	baseness	debasing	pusillanimous
+wilma	landfall	hurricane	cyclone	storm	grimmer	atlantic_hurricane	northeastward	gust	torrential	biloxi	rainband	typhoon	nor'easter	tropical	houma
+militarisation	militarized	militarism	militaristic	destabilization	state-building	globalist	neoliberalism	interventionism	expansionist	expansionism	adventurism	destabilisation	intensifying	geostrategic	reassert
+air_pollution	polluting	polluted	water_pollution	smog	polluter	environmental	air_quality	pollute	airshed	coal-burning	eutrophication	nonpoint	antipollution	pollutant	effluent
+darkfield	micrograph	photomicrograph	retouch	stippling	sectioned	multicolor	stereoscope	retouch	birefringent	visualized	textural	autofluorescence	autoradiograph	antialias	metallography
+
+lyric	sing	songbook	tune	singing	rockabilly	bluesy	sang	melody	ditty	ballad	lyricist	remix	lullaby	sung	lyrically
+right_wing	flapping	flap	wingspan	fuselage	winged	beak	underside	rump	aloft	outspread	aileron	feathering	flying	feather	tail
+unsung	heroic	bravery	villain	heroism	plucky	larger-than-life	warrior	legendary	portrayed	gladiator	derring-do	heroine	demigod	coward	daring
+cumulonimbus	cloud	stratocumulus	convective	updraft	stratiform	downdraft	cyclonic	stratus	convection	cloudiness	anticyclonic	advect	squall	thunderstorm	northwestward
+gold	platter	silver_star	silver_bullet	silver_lake	plate	silver-plated	pewter	silversmith	burnished	bronze	inlaid	lining	coinage	coin	silver_bell
+
+
+****************************Stage 1-norm-hearst +*Stage 2 - PhiModule - 01+02 TOP 15 ************************************************
+blackfly	nelly	river	insect	control	mayfly	chironomid	simulium	ephemeroptera	killifish	pest_populations	problems	plant	population	hospital	phalacrocorax
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	granulite	clastic	superterrane	downdip
+abhorrence	life	tate	men	world	detestation	repugnance	malignity	indignation	detestable	the_opposition	government	war	way	person	vehemence
+hurricane	tropical	precipitation	natural_disaster	tropical_storm	rain	wind	wilma	landfall	cyclone	storm	grimmer	center	natural_disasters	extreme_weather_conditions	biloxi
+negotiation	enforcement	colonialism	militarization	tate	militarisation	militarized	militarism	militaristic	destabilization	war	government	right	issues	life-cycle_costs	expansionist
+air_pollution	pollution	problem	health	environment	waste	polluting	polluted	water_pollution	smog	polluter	energy	use	development	management	coal-burning
+photomicrograph	format	electron_microscopy	image	microscope	film	darkfield	micrograph	retouch	stippling	sectioned	photomicrography	images	optical_microscopy	image_sources	textural
+dome
+bird	performance	radio	men	culture	lyric	sing	songbook	tune	singing	experience	poetry	jazz	everything	verse	ditty
+wing	research	government	world	data	right_wing	flapping	flap	wingspan	fuselage	use	development	drawing	project	university	aloft
+unsung	heroic	bravery	villain	heroism	plucky	larger-than-life	warrior	legendary	portrayed
+cloud	cumulonimbus	convection	model	cumulus_cloud	air	wind	low_clouds	stratocumulus	convective	updraft	stratiform	downdraft	several_sub-types	marine_boundary_layer_clouds	advect
+coin	metal	use	children	fish	iron	gold	platter	silver_star	silver_bullet	silver_lake	jewelry	everything	china	treasure	burnished
+verbena	desert	dune	plant	flower	heat-loving_flowers	matted_plants	the_beaches	ephemerals	colorful_annuals
+
+*********************************FINAL = Stage2-Model1 + (Stage1_Norm_hearst + (Stage2-Phi-1-2))****************************************
+blackfly	nelly	river	insect	control	mayfly	chironomid	simulium	ephemeroptera	killifish
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	granulite	clastic	superterrane	downdip
+abhorrence	life	tate	men	world	detestation	repugnance	malignity	indignation	detestable
+storm	storm	hurricane	example	reminder	focus	tropical	precipitation	natural_disaster	tropical_storm	rain	wind	wilma	landfall	cyclone	grimmer
+mechanism	panama	fumigation	slippery_slope	negotiation	enforcement	colonialism	militarization	tate	militarisation	militarized	militarism	militaristic	destabilization
+problem	threat	concern	factor	challenge	component	air_pollution	pollution	health	environment	waste	source	way	contamination	hazard	polluter
+image	error	background	digital_image	magnification	dust_contamination	photomicrograph	format	electron_microscopy	microscope	film	darkfield	micrograph	retouch	stippling	sectioned
+gum	dome
+song	example	resource	tribute	anthem	bird	performance	radio	men	culture	bit	hit	way	story	version	singing
+wing	site	addition	aircraft	library	assistant_professor	research	government	world	data	right_wing	surface	appendage	park	way	use
+hero	person	protagonist	guy	one	unsung	heroic	bravery	villain	heroism	sort	boy	professor	mind	figure	portrayed
+scheme	stage	plume	database	cloud	cumulonimbus	convection	model	cumulus_cloud	air	wind	low_clouds	stratocumulus	convective
+metal	award	example	conductor	story	entrepreneur	coin	use	children	fish	iron	honor	professor	fellow	good_example	silver_lake
+verbena	desert	dune	plant	flower	heat-loving_flowers	matted_plants	the_beaches	ephemerals	colorful_annuals
+woman	disregard	exception	fiorina	outrage
+***************************************** FINAL - CONCEPTS - TOP 15 ************************************************************
+blackfly	nelly	river	insect	control	mayfly	chironomid	simulium	ephemeroptera	killifish
+abhorrence	life	tate	men	world	detestation	repugnance	malignity	indignation	detestable
+storm	storm	hurricane	example	reminder	focus	tropical	precipitation	natural_disaster	tropical_storm	rain	wind	wilma	landfall	cyclone	grimmer
+mechanism	panama	fumigation	slippery_slope	negotiation	enforcement	colonialism	militarization	tate	militarisation	militarized	militarism	militaristic	destabilization
+problem	threat	concern	factor	challenge	component	air_pollution	pollution	health	environment	waste	source	way	contamination	hazard	polluter
+image	error	background	digital_image	magnification	dust_contamination	photomicrograph	format	electron_microscopy	microscope	film	darkfield	micrograph	retouch	stippling	sectioned
+gum	dome
+song	example	resource	tribute	anthem	bird	performance	radio	men	culture	bit	hit	way	story	version	singing
+wing	site	addition	aircraft	library	assistant_professor	research	government	world	data	right_wing	surface	appendage	park	way	use
+scheme	stage	plume	database	cloud	cumulonimbus	convection	model	cumulus_cloud	air	wind	low_clouds	stratocumulus	convective
+metal	award	example	conductor	story	entrepreneur	coin	use	children	fish	iron	honor	professor	fellow	good_example	silver_lake
+verbena	desert	dune	plant	flower	heat-loving_flowers	matted_plants	the_beaches	ephemerals	colorful_annuals
+louse	vector	insect	weapon	presence	clothing	parasite	microscope	blouse	mouthpart	pediculus	encysted	pinworm	spittlebug	day
+nitrite	odium	meat	cyanide	nitrate	decarboxylation	phenylpropanoid	oxylipin	polyphenol	prostaglandin	cyanide_antidotes
+browser	web_browser	home_page	solution	web	component	example	explorer	technology	javascript	eclipse	navigational	website	registered_trademark	application	escape
+***************************************** FINAL - ENTITIES - TOP 15 ************************************************************
+maastrichtian	neogene	oligocene	mudstone	unconformably	siliciclastic	granulite	clastic	superterrane	downdip
+hero	person	protagonist	guy	one	unsung	heroic	bravery	villain	heroism	sort	boy	professor	mind	figure	portrayed
+woman	disregard	exception	fiorina	outrage
+
+
+
+
+
+
+
+fanon	boa	culturalist	ethnocentrism	eurocentrism	positivism	schelling	jürgen	habermas	espousal
+
+
+
+county	school	keen	montpelier	castleton	waterbury	maryanne	elizabethtown	burlington	currier	belles	hampshire
+==============================================================================================================================================

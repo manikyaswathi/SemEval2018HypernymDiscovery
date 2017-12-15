@@ -1,0 +1,85 @@
+Author : Manikya Swathi Vallabhajosyula
+
+Role : 
+Implemented module to extract : Bag of words based on POS Tag patterns of Vocabulary file ==> Normalized Text (stored in DataN) [STEP A]
+Implemented module to extract : Hearst Patterns [6 Patterns] ==> Hearst Text (stored in DataH) [STEP B]
+Implemented the execution module : The structure of project, install.sh, runIt.sh
+
+Responsible for the following src files: [Look into the files for more details]
+> getTags.py
+> HearstAlgo_Norm.py
+> mergeOutput.py
+
+Responsible for the following sh files: [Look into the files for more details]
+> install.sh
+> runIt.sh
+
+Other files
+> DetailsOf_runIT_sh.txt
+> Main_ReadMe.txt
+> Pre processed data	:	https://drive.google.com/a/d.umn.edu/file/d/0B9xD1bj5DY-GUG1raDJzelNvRU0/view?usp=sharing
+
+==========================================================================================================================================
+1. Running getTags.py
+python getTags.py ../SemEval18-Task9/vocabulary/1A.english.vocabulary.txt ../SemEval18-Task9/vocabulary/1A.english.vocabulary_0.txt ../SemEval18-Task9/vocabulary/1A.english.vocabulary_1.txt
+
+The idea of this file is to tag the huge Vocab file with POS tags and categorise the counts of each POS tag pattern. Then get the top POS patterns with more tam 100 repetations in the vocan file. This helps to fetch the bi-grams and tri-grams from input corpus which could carry valid hypernym information.
+
+2. Hearts Algorithm patterns [http://people.ischool.berkeley.edu/~hearst/papers/coling92.pdf]
+a. NP such as NP[, NP, NP.. and|or NP] : <Hypernym> such as <Hyponym List>
+b. such NP as NP[, NP, NP.. and|or NP] : such <Hypernym> as <Hyponym List>
+c. NP[, NP, NP,...NP] or other NP      : <Hyponym List> or other <Hypernym>
+d. NP[, NP, NP,...NP] and other NP     : <Hyponym List> and other <Hypernym>
+e. NP including NP[, NP,...,and|or NP] : <Hypernym> including <Hyponym List>
+f. NP especially NP[, NP,...,and|or NP]: <Hypernym> especially <Hyponym List> [Have to implement this] misplaced it as excluding instead
+
+For More Details of the pattern Look for : src/HearstAlgo_Norm.py
+
+3. FLOW GRAPH of creating [STEP A] and [STEP B]
+  					   Pre-Processeing Module
+				 ---------------------------------------
+				|					|	
+				| 1. Read 1A.english.vocabulary_1.txt	|		
+				| 		||			|
+				|		\/			|
+				|    2. Create Hearst Pattern files	|
+				|		||			|
+				|		\/			|
+				|   3. extract patterns matching the 	|
+				| 1A.english.vocabulary_1.txt from input|	|_ DataH	[Step 5]
+	Input UMBC Tagged	|		||			|
+	Corpus		     ==>|		\/			|==>    |_ DataN	[Step 2]
+				|   4. extract nouns unigrams from	|
+				|		input			|
+				|		||			|
+				|		\/			|
+				|   5. Append the patterns of 3 to 4	|
+				|  to create the Normalised text files	|
+				|					|
+				 ---------------------------------------
+Run the Program for the above graph as :
+-----------------------------------------
+python HearstAlgo_Norm.py "1A.english.vocabulary_1.txt" "UMBC Tagged Corpus" "DataH" "DataN" "pattern_of_file_name"
+
+> pattern_of_file_name : (delorme.com_shu.pages_, mbta.com_mtu.pages_, ucdavis_wnba.pages_, utexas_iit.pages_, weather.yahoo_bbk.ac.pages_)
+
+4. Run Modules by Arshia and create files "1A.english.output.trial.hearst-Stage1_sample.txt" and "1A.english.output.trial.norm-Stage1_sample.txt" 
+
+5. Merge the files of 4 by running the below to get the following: "1A.english.output.trial.merge-stage1_Sample.txt"
+python mergeOutput.py "1A.english.output.trial.hearst-Stage1_sample.txt" "1A.english.output.trial.norm-Stage1_sample.txt" "1A.english.output.trial.merge-stage1_Sample.txt"
+
+6. Run the scoreer program againt all files in Output folder. ANALYSIS:
+> result with "1A.english.output.trial.norm-Stage1_sample.txt" seem to get MRR 0.26 over 1.0.
+- seem to get a fairly good result with just one feature (co-occurance) over all the sample putput files (not just 15)
+- This could improve if we would add more feature to the candidate hypernym extraction algorithm
+> result with "1A.english.output.trial.hearst-Stage1_sample.txt" seem to get MRR 0.00333333333333 over 1.0.
+- This is very poor as we have not yet applied unigrams, bigrams and trigrams from the hearst patterns.
+- we plainly match the NP from the HEARST PATTERNS to the vaocabulary and input file.
+- The input and vocab files have more unigrams than bi/tri-grams.
+- When we manually looked for the input terms in the HEARST Patterns, we could find more similarity between the candidate hypernyms and the gold data. 
+- Hence, we have to still Normalise Hearts Patterns
+==========================================================================================================================================
+FUTURE PLANS:
+1. Normalize HEARST patterns.
+2. Applying word embeddings to the Normalized texts
+3. Fetch the new results and see how the scores change

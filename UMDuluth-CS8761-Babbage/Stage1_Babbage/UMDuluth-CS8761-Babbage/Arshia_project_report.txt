@@ -1,0 +1,77 @@
+Author : Arshia Zernab Hassan
+
+Role : Implemented two modules responsible for extracting candidate hypernyms from the normalized data.
+ 
+cooc.py
+generate_candidate_from_corpus.py
+generate_candidate_load_map.py
+generate_cooc_to_file.py
+
+hearst.py
+hearst_generate_candidate_from_corpus.py
+hearst_generate_candidate_load_map.py
+hearst_generate_cooc_to_file.py
+
+There are two separate modules for generating output from two different normalized data set.
+
+The intuition behind adopting the following approaches for discovering hypernyms is - hyponyms and hypernyms 
+are more probable to co-exist in the same region in text.
+
+The data is organized in a way, so that each line (which can have several sentences) represents one idea or topic.
+The lines in a complete file are not meaningfully connected to each other. They are extracted from different sources
+and discusses about different topics. In order to process an input term, the complete data set needs to be traversed 
+to find the occurance of that term, and also to discover the context in which the term occurs. Our intuition was, 
+hypernyms of a term are more likely to occur in the same context or vicinity of the term. That is why we chose 
+co-occurence as a feature for discovering hypernyms, also Santus et al. used co-ocurence as a feature in their learning 
+taxonomical semantic relations. 
+
+The general idea is, for an input term, to extract all the lines from the corpus contaning that term 
+and count the frequency of the nouns or noun phrases occuring in those lines. These words or phrases are potential 
+hypernyms of the term. So, we calculate co-occurence frequency of the term with other words and based on frequency rank 
+the words as candidate hypernyms.
+
+We process all the input terms together. For each line of data corpus, we list the input terms occuring in that line. 
+Then, for each of those listed terms, all the  other words in that line are listed as possible hypernyms. In this way an input-biased
+a mapping or a dictionary is created. The inputs terms are the keys or the indices of the dictionary. Co-occured words and 
+their co-occurence frequencies are the values of the dictionary mapped by the corresponding input term. The candidate words are then sorted 
+based on frequency to produce the candidate hypernym list. It is checked if the word is in the provided voacabulary list, before 
+considering it as a potential hypernym.
+
+The implementation of this module is provided in the python file cooc.py. The driver files for running and testing the functions are 
+generate_candidate_from_corpus.py, generate_candidate_load_map.py and generate_cooc_to_file.py. Detail information 
+of the functionalities are provided in the comments in the files.
+All are implemented using python version 2.7.
+
+To create output using the data corpus (in directory "data/"), input terms("input.txt"), vocabulary words("vocabulary.txt") 
+and write output to "out.txt" run- 
+python generate_candidate_from_corpus.py "input.txt" "data/" "vocabulary.txt" "out.txt"
+
+To create intermidiate dictionary using the data corpus (in directory "data/"), input terms("input.txt"), and write it to "dictionary.txt" run-
+python generate_cooc_to_file.py "input.txt" "data/" "dictionary.txt" 
+
+To create output using the pre-created dictionary ("dictionary.txt" ), input terms("input.txt"), vocabulary words("vocabulary.txt") 
+and write output to "out.txt" run- 
+python generate_candidate_load_map.py "input.txt" "dictionary.txt" "vocabulary.txt" "out.txt"
+
+The other approach addresses data corpus normalized using the Hearst algorithm. Here the data is normalized to represent possible 
+hypernym-hyponyms mappings.  Each line of the normalized data is of the form - Hypernym : hyponym	hyponym	hyponym.
+In this case also, co-occurence and also frequency of the term-hypernym pair is considered for selecting candidate hypernyms.
+To create a similar dictionary as the previous approach, again the input terms are considered simaltaneously. If an input term occurs 
+as a hyponym in a line, then the corresponding hypernym is added as a candidate for that term. Subsequent occurences of that pair updates 
+the frequency count. After creating the dictionary, candidate hypernyms for each term is sorted using frequency count. In this scenario, the 
+hypernyms are not matched with vocabulary words. The hypernyms need to be post-processed for getting better results from direct string matching.
+
+The implementation of this module is provided in the python file hearst.py. The driver files for running and testing the functions are 
+hearst_generate_candidate_from_corpus.py, hearst_generate_candidate_load_map.py and hearst_generate_cooc_to_file.py. Detail information 
+of the functionalities are provided in the comments in the files.
+All are implemented using python version 2.7. 
+
+To create output using the data corpus (in directory "data/"), input terms("input.txt"), vocabulary words("vocabulary.txt") and write output to "out.txt" run- 
+python hearst_generate_candidate_from_corpus.py "input.txt" "data/" "vocabulary.txt" "out.txt"
+
+To create intermidiate dictionary using the data corpus (in directory "data/"), input terms("input.txt"), and write it to "dictionary.txt" run-
+python hearst_generate_cooc_to_file.py "input.txt" "data/" "dictionary.txt" 
+
+To create output using the pre-created dictionary ("dictionary.txt" ), input terms("input.txt"), vocabulary words("vocabulary.txt") 
+and write output to "out.txt" run- 
+python hearst_generate_candidate_load_map.py "input.txt" "dictionary.txt" "vocabulary.txt" "out.txt"

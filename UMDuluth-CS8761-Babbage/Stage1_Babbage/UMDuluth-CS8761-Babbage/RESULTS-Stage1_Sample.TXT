@@ -1,0 +1,36 @@
+The Syatem is evaluated against both modules individually and then by combining the results.
+The PART 1: 1A.english.output.trial.norm.txt 	: Based on Co-occurance and Bag of words
+The PART 2: 1A.english.output.trial.hearst.txt	: Based on Hearst Patterns
+The PART 3: 1A.english.output.trial.merge.txt	: BAST on PART 1 and PART 2
+------------------------------------------------------------------------------------------------
+Analysis of the Results:
+1. The system seem to perform fairly well with co-occurance and bag of words.
+2. Hearts patterns could not provide much help as agisnt when alayed manually. [Why? Answerd in Swathi_Project-reprt.txt]
+3. So merging the results was close to PART 1 only.
+*******************************************************************
+*****************RESULTS FROM CO-OCCURANCE ONLY***************
+*******************************************************************
+MRR: 0.26
+MAP: 0.111646512747
+P@1: 0.2
+P@3: 0.136666666667
+P@5: 0.108
+P@15: 0.0973823953824
+*******************************************************************
+*****************RESULTS FROM HEARST ONLY***************
+*******************************************************************
+MRR: 0.00333333333333
+MAP: 0.00266666666667
+P@1: 0.0
+P@3: 0.0
+P@5: 0.0
+P@15: 0.004
+*******************************************************************
+*****************RESULTS FROM Pattern1 and Pattern2****************
+*******************************************************************
+MRR: 0.26
+MAP: 0.111646512747
+P@1: 0.2
+P@3: 0.136666666667
+P@5: 0.108
+P@15: 0.0973823953824
