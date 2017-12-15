@@ -3,13 +3,12 @@ Team : Babbage
 Team members (in alphabatical order) : Arshia Zernab Hassan, Swathi Manikya Vallabhajosyula
 
 Problem Description : 
-Objective: Find the list of best Hypernyms (output) for a term (input) from a search-space of Hypernyms(vocabulary).
+ Hypernym discovery task involves producing potential hypernyms given a hyponym and ranking these hypernyms. This paper explores several approaches to address this problem. Our system employs co-occurrence frequencies, Hearst patterns and word embeddings created using normalized data to achieve this goal. This model is built as a solution to the SemEval 2018 Task 9 - Hypernym Discovery.
 
 Solution :
 
-How to run the project :
+Stage 1 - Co-occarence frequency from Normalization and Hearst Patterns
+Stage 2 (System_babbage) -  results form word embedddings
 
-Input format :
-
-Output format :
+How to run the project : run Install.sh as "sh Install.sh" with execute permissions. [extract the project as a zip and download this file spearately]
 
